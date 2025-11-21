@@ -1,0 +1,564 @@
+[1mdiff --git a/README.md b/README.md[m
+[1mindex 5a19f31a..04d414ff 100644[m
+[1m--- a/README.md[m
+[1m+++ b/README.md[m
+[36m@@ -1,52 +1,521 @@[m
+[31m-# MERN Stack Capstone Project[m
+[32m+[m[32m# SignSmart - Learn Sign Language 🤟[m
+ [m
+[31m-This assignment focuses on designing, developing, and deploying a comprehensive full-stack MERN application that showcases all the skills you've learned throughout the course.[m
+[32m+[m[32mSignSmart is a full-stack interactive web application designed to make learning sign language fun, accessible, and effective for everyone. Using AI-powered feedback and engaging learning methods, SignSmart helps users master sign language at their own pace.[m
+ [m
+[31m-## Assignment Overview[m
+[32m+[m[32m![SignSmart Banner](https://images.unsplash.com/photo-1581333100574-6b5a6c6b9b0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80)[m
+ [m
+[31m-You will:[m
+[31m-1. Plan and design a full-stack MERN application[m
+[31m-2. Develop a robust backend with MongoDB, Express.js, and Node.js[m
+[31m-3. Create an interactive frontend with React.js[m
+[31m-4. Implement testing across the entire application[m
+[31m-5. Deploy the application to production[m
+[32m+[m[32m## 🌟 Features[m
+ [m
+[31m-## Getting Started[m
+[32m+[m[32m### Interactive Lessons[m
+[32m+[m[32m- **Structured Learning Path**: Four difficulty levels (Beginner to Expert)[m
+[32m+[m[32m- **Real-time AI Feedback**: Get instant feedback on your hand positioning[m
+[32m+[m[32m- **Progress Tracking**: Monitor your learning journey with detailed statistics[m
+[32m+[m[32m- **Multiple Categories**: Alphabet, numbers, greetings, and basic signs[m
+ [m
+[31m-1. Accept the GitHub Classroom assignment[m
+[31m-2. Clone the repository to your local machine[m
+[31m-3. Follow the instructions in the `Week8-Assignment.md` file[m
+[31m-4. Plan, develop, and deploy your capstone project[m
+[32m+[m[32m### Educational Games[m
+[32m+[m[32m- **Sign Match**: Memory card game matching signs with their meanings[m
+[32m+[m[32m- **Sign Quiz**: Multiple-choice questions to test your knowledge[m
+[32m+[m[32m- **Finger Spelling Challenge**: Practice spelling words using sign language[m
+ [m
+[31m-## Files Included[m
+[32m+[m[32m### SmartBot AI Assistant[m
+[32m+[m[32m- 24/7 learning support[m
+[32m+[m[32m- Answers questions about sign language[m
+[32m+[m[32m- Provides personalized learning recommendations[m
+ [m
+[31m-- `Week8-Assignment.md`: Detailed assignment instructions[m
+[32m+[m[32m### Sign Language Gallery[m
+[32m+[m[32m- Browse common signs with detailed instructions[m
+[32m+[m[32m- Interactive 3D sign viewer with rotation controls[m
+[32m+[m[32m- Visual demonstrations for each sign[m
+ [m
+[31m-## Requirements[m
+[32m+[m[32m### User Experience[m
+[32m+[m[32m- **Responsive Design**: Works on desktop, tablet, and mobile devices[m
+[32m+[m[32m- **Offline Capable**: Games work without internet connection[m
+[32m+[m[32m- **User Accounts**: Track progress across sessions[m
+[32m+[m[32m- **Beautiful UI**: Engaging, accessible design with smooth animations[m
+ [m
+[31m-- Node.js (v18 or higher)[m
+[31m-- MongoDB (local installation or Atlas account)[m
+[31m-- npm or yarn[m
+[31m-- Git and GitHub account[m
+[31m-- Accounts on deployment platforms (Render/Vercel/Netlify/etc.)[m
+[32m+[m[32m## 🏗️ System Architecture[m
+ [m
+[31m-## Project Ideas[m
+[32m+[m[32m### Frontend (Client-Side)[m
+[32m+[m[32m- **Framework**: Vanilla JavaScript with modern ES6+ features[m
+[32m+[m[32m- **Styling**: Custom CSS with CSS Variables for theming[m
+[32m+[m[32m- **Icons**: Font Awesome 6.4.0[m
+[32m+[m[32m- **Fonts**: Poppins, Open Sans (Google Fonts)[m
+[32m+[m[32m- **Responsive Design**: Mobile-first approach with flexbox and grid[m
+ [m
+[31m-The `Week8-Assignment.md` file includes several project ideas, but you're encouraged to develop your own idea that demonstrates your skills and interests.[m
+[32m+[m[32m### Backend (Server-Side)[m
+[32m+[m[32m- **Runtime**: Node.js with Express.js[m
+[32m+[m[32m- **Authentication**: JWT (JSON Web Tokens)[m
+[32m+[m[32m- **API**: RESTful API design[m
+[32m+[m[32m- **Real-time Features**: Socket.io for live interactions[m
+[32m+[m[32m- **File Upload**: Multer for handling media files[m
+ [m
+[31m-## Submission[m
+[32m+[m[32m### Database[m
+[32m+[m[32m- **Primary Database**: MongoDB with Mongoose ODM[m
+[32m+[m[32m- **Session Storage**: Redis for caching and sessions[m
+[32m+[m[32m- **File Storage**: AWS S3 or MongoDB GridFS for media files[m
+ [m
+[31m-Your project will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:[m
+[32m+[m[32m### AI/ML Services[m
+[32m+[m[32m- **Hand Pose Detection**: TensorFlow.js with MediaPipe[m
+[32m+[m[32m- **Image Recognition**: Custom CNN models for sign classification[m
+[32m+[m[32m- **Natural Language Processing**: For SmartBot assistant[m
+ [m
+[31m-1. Commit and push your code regularly[m
+[31m-2. Include comprehensive documentation[m
+[31m-3. Deploy your application and add the live URL to your README.md[m
+[31m-4. Create a video demonstration and include the link in your README.md[m
+[32m+[m[32m## 🚀 Getting Started[m
+ [m
+[31m-## Resources[m
+[32m+[m[32m### Prerequisites[m
+[32m+[m[32m- Node.js 16+ and npm[m
+[32m+[m[32m- MongoDB 5.0+[m
+[32m+[m[32m- Modern web browser with camera access[m
+ [m
+[31m-- [MongoDB Documentation](https://docs.mongodb.com/)[m
+[31m-- [Express.js Documentation](https://expressjs.com/)[m
+[31m-- [React Documentation](https://react.dev/)[m
+[31m-- [Node.js Documentation](https://nodejs.org/en/docs/)[m
+[31m-- [GitHub Classroom Guide](https://docs.github.com/en/education/manage-coursework-with-github-classroom) [m
+\ No newline at end of file[m
+[32m+[m[32m### Installation[m
+[32m+[m
+[32m+[m[32m1. **Clone the Repository**[m
+[32m+[m[32m   ```bash[m
+[32m+[m[32m   git clone https://github.com/signsmart/signsmart-fullstack.git[m
+[32m+[m[32m   cd signsmart-fullstack[m
+[32m+[m
+[32m+[m[32m   Database Schema[m
+[32m+[m[32mUser Model[m
+[32m+[m[32mjavascript[m
+[32m+[m[32m{[m
+[32m+[m[32m  _id: ObjectId,[m
+[32m+[m[32m  email: String,           // Unique[m
+[32m+[m[32m  password: String,        // Hashed[m
+[32m+[m[32m  name: String,[m
+[32m+[m[32m  avatar: String,[m
+[32m+[m[32m  ageGroup: String,        // 'child', 'teen', 'adult'[m
+[32m+[m[32m  preferences: {[m
+[32m+[m[32m    language: String,      // 'ASL', 'BSL', etc.[m
+[32m+[m[32m    difficulty: String,    // 'beginner', 'intermediate', etc.[m
+[32m+[m[32m    notifications: Boolean[m
+[32m+[m[32m  },[m
+[32m+[m[32m  createdAt: Date,[m
+[32m+[m[32m  updatedAt: Date[m
+[32m+[m[32m}[m
+[32m+[m[32mProgress Model[m
+[32m+[m[32mjavascript[m
+[32m+[m[32m{[m
+[32m+[m[32m  _id: ObjectId,[m
+[32m+[m[32m  userId: ObjectId,        // Reference to User[m
+[32m+[m[32m  level: String,           // 'beginner', 'intermediate', etc.[m
+[32m+[m[32m  lesson: String,          // 'alphabet', 'numbers', etc.[m
+[32m+[m[32m  signId: ObjectId,        // Reference to Sign[m
+[32m+[m[32m  accuracy: Number,        // 0-100[m
+[32m+[m[32m  attempts: Number,[m
+[32m+[m[32m  completed: Boolean,[m
+[32m+[m[32m  bestScore: Number,[m
+[32m+[m[32m  timeSpent: Number,       // in seconds[m
+[32m+[m[32m  lastPracticed: Date[m
+[32m+[m[32m}[m
+[32m+[m[32mSign Model[m
+[32m+[m[32mjavascript[m
+[32m+[m[32m{[m
+[32m+[m[32m  _id: ObjectId,[m
+[32m+[m[32m  name: String,[m
+[32m+[m[32m  category: String,        // 'alphabet', 'numbers', 'greetings'[m
+[32m+[m[32m  difficulty: String,      // 'beginner', 'intermediate', etc.[m
+[32m+[m[32m  icon: String,            // Emoji or image URL[m
+[32m+[m[32m  description: String,[m
+[32m+[m[32m  instructions: String,[m
+[32m+[m[32m  videoUrl: String,        // Demonstration video[m
+[32m+[m[32m  imageUrl: String,        // Reference image[m
+[32m+[m[32m  tags: [String],          // Searchable tags[m
+[32m+[m[32m  variations: [            // Different sign variations[m
+[32m+[m[32m    {[m
+[32m+[m[32m      region: String,      // 'ASL', 'BSL', etc.[m
+[32m+[m[32m      description: String[m
+[32m+[m[32m    }[m
+[32m+[m[32m  ][m
+[32m+[m[32m}[m
+[32m+[m[32mGame Session Model[m
+[32m+[m[32mjavascript[m
+[32m+[m[32m{[m
+[32m+[m[32m  _id: ObjectId,[m
+[32m+[m[32m  userId: ObjectId,[m
+[32m+[m[32m  gameType: String,        // 'memory', 'quiz', 'spelling'[m
+[32m+[m[32m  score: Number,[m
+[32m+[m[32m  duration: Number,        // in seconds[m
+[32m+[m[32m  correctAnswers: Number,[m
+[32m+[m[32m  totalQuestions: Number,[m
+[32m+[m[32m  date: Date,[m
+[32m+[m[32m  level: String[m
+[32m+[m[32m}[m
+[32m+[m[32m🔌 API Endpoints[m
+[32m+[m[32mAuthentication[m
+[32m+[m[32mPOST /api/auth/register - User registration[m
+[32m+[m
+[32m+[m[32mPOST /api/auth/login - User login[m
+[32m+[m
+[32m+[m[32mPOST /api/auth/logout - User logout[m
+[32m+[m
+[32m+[m[32mPOST /api/auth/refresh - Refresh token[m
+[32m+[m
+[32m+[m[32mGET /api/auth/me - Get current user[m
+[32m+[m
+[32m+[m[32mUsers[m
+[32m+[m[32mGET /api/users/profile - Get user profile[m
+[32m+[m
+[32m+[m[32mPUT /api/users/profile - Update user profile[m
+[32m+[m
+[32m+[m[32mGET /api/users/progress - Get user progress[m
+[32m+[m
+[32m+[m[32mGET /api/users/stats - Get user statistics[m
+[32m+[m
+[32m+[m[32mLessons[m
+[32m+[m[32mGET /api/lessons - Get all lessons[m
+[32m+[m
+[32m+[m[32mGET /api/lessons/:level - Get lessons by level[m
+[32m+[m
+[32m+[m[32mGET /api/lessons/:level/:category - Get specific lesson[m
+[32m+[m
+[32m+[m[32mPOST /api/lessons/progress - Update lesson progress[m
+[32m+[m
+[32m+[m[32mGET /api/lessons/recommendations - Get personalized recommendations[m
+[32m+[m
+[32m+[m[32mGames[m
+[32m+[m[32mGET /api/games/memory - Get memory game data[m
+[32m+[m
+[32m+[m[32mGET /api/games/quiz - Get quiz questions[m
+[32m+[m
+[32m+[m[32mGET /api/games/spelling - Get spelling words[m
+[32m+[m
+[32m+[m[32mPOST /api/games/session - Save game session[m
+[32m+[m
+[32m+[m[32mSigns[m
+[32m+[m[32mGET /api/signs - Get all signs[m
+[32m+[m
+[32m+[m[32mGET /api/signs/search - Search signs[m
+[32m+[m
+[32m+[m[32mGET /api/signs/:id - Get sign details[m
+[32m+[m
+[32m+[m[32mGET /api/signs/category/:category - Get signs by category[m
+[32m+[m
+[32m+[m[32mAI Services[m
+[32m+[m[32mPOST /api/ai/analyze-sign - Analyze hand sign from image/video[m
+[32m+[m
+[32m+[m[32mPOST /api/ai/chat - SmartBot chat endpoint[m
+[32m+[m
+[32m+[m[32mGET /api/ai/feedback - Get AI feedback suggestions[m
+[32m+[m
+[32m+[m[32m🛠️ Technology Stack[m
+[32m+[m[32mFrontend[m
+[32m+[m[32mFramework: React 18+ with Hooks[m
+[32m+[m
+[32m+[m[32mRouting: React Router v6[m
+[32m+[m
+[32m+[m[32mState Management: Context API + useReducer[m
+[32m+[m
+[32m+[m[32mStyling: CSS Modules + CSS Variables[m
+[32m+[m
+[32m+[m[32mHTTP Client: Axios[m
+[32m+[m
+[32m+[m[32mForm Handling: React Hook Form[m
+[32m+[m
+[32m+[m[32mCharts: Chart.js or Recharts[m
+[32m+[m
+[32m+[m[32mIcons: Font Awesome[m
+[32m+[m
+[32m+[m[32mFonts: Google Fonts (Poppins, Open Sans)[m
+[32m+[m
+[32m+[m[32mBackend[m
+[32m+[m[32mRuntime: Node.js[m
+[32m+[m
+[32m+[m[32mFramework: Express.js[m
+[32m+[m
+[32m+[m[32mDatabase: MongoDB with Mongoose[m
+[32m+[m
+[32m+[m[32mAuthentication: JWT, bcrypt[m
+[32m+[m
+[32m+[m[32mValidation: Joi[m
+[32m+[m
+[32m+[m[32mFile Upload: Multer[m
+[32m+[m
+[32m+[m[32mReal-time: Socket.io[m
+[32m+[m
+[32m+[m[32mCaching: Redis[m
+[32m+[m
+[32m+[m[32mTesting: Jest, Supertest[m
+[32m+[m
+[32m+[m[32mDocumentation: Swagger/OpenAPI[m
+[32m+[m
+[32m+[m[32mDevOps & Deployment[m
+[32m+[m[32mContainerization: Docker, Docker Compose[m
+[32m+[m
+[32m+[m[32mCI/CD: GitHub Actions[m
+[32m+[m
+[32m+[m[32mCloud Platform: AWS or Google Cloud[m
+[32m+[m
+[32m+[m[32mMonitoring: Prometheus, Grafana[m
+[32m+[m
+[32m+[m[32mLogging: Winston[m
+[32m+[m
+[32m+[m[32mAPI Gateway: Nginx[m
+[32m+[m
+[32m+[m[32m🔒 Security Features[m
+[32m+[m[32mJWT-based authentication with refresh tokens[m
+[32m+[m
+[32m+[m[32mPassword hashing with bcrypt[m
+[32m+[m
+[32m+[m[32mCORS configuration[m
+[32m+[m
+[32m+[m[32mHelmet.js for security headers[m
+[32m+[m
+[32m+[m[32mRate limiting with express-rate-limit[m
+[32m+[m
+[32m+[m[32mInput validation and sanitization[m
+[32m+[m
+[32m+[m[32mSQL injection prevention (MongoDB built-in)[m
+[32m+[m
+[32m+[m[32mXSS protection[m
+[32m+[m
+[32m+[m[32mFile upload restrictions[m
+[32m+[m
+[32m+[m[32m🧪 Testing[m
+[32m+[m[32mBackend Testing[m
+[32m+[m[32mbash[m
+[32m+[m[32mcd backend[m
+[32m+[m[32mnpm test              # Unit tests[m
+[32m+[m[32mnpm run test:integration  # Integration tests[m
+[32m+[m[32mnpm run test:coverage # Test coverage[m
+[32m+[m[32mFrontend Testing[m
+[32m+[m[32mbash[m
+[32m+[m[32mcd frontend[m
+[32m+[m[32mnpm test              # Unit tests[m
+[32m+[m[32mnpm run test:e2e      # End-to-end tests[m
+[32m+[m[32mAPI Testing[m
+[32m+[m[32mbash[m
+[32m+[m[32m# Using Postman or Insomnia[m
+[32m+[m[32m# Collection available in /docs/api-collection.json[m
+[32m+[m[32m🚀 Deployment[m
+[32m+[m[32mProduction Build[m
+[32m+[m[32mbash[m
+[32m+[m[32m# Backend[m
+[32m+[m[32mcd backend[m
+[32m+[m[32mnpm run build[m
+[32m+[m
+[32m+[m[32m# Frontend[m
+[32m+[m[32mcd frontend[m
+[32m+[m[32mnpm run build[m
+[32m+[m[32mDocker Deployment[m
+[32m+[m[32mdockerfile[m
+[32m+[m[32m# docker-compose.yml[m
+[32m+[m[32mversion: '3.8'[m
+[32m+[m[32mservices:[m
+[32m+[m[32m  backend:[m
+[32m+[m[32m    build: ./backend[m
+[32m+[m[32m    ports:[m
+[32m+[m[32m      - "5000:5000"[m
+[32m+[m[32m    environment:[m
+[32m+[m[32m      - NODE_ENV=production[m
+[32m+[m[32m      - MONGODB_URI=mongodb://mongodb:27017/signsmart[m
+[32m+[m[32m    depends_on:[m
+[32m+[m[32m      - mongodb[m
+[32m+[m
+[32m+[m[32m  frontend:[m
+[32m+[m[32m    build: ./frontend[m
+[32m+[m[32m    ports:[m
+[32m+[m[32m      - "3000:80"[m
+[32m+[m[32m    depends_on:[m
+[32m+[m[32m      - backend[m
+[32m+[m
+[32m+[m[32m  mongodb:[m
+[32m+[m[32m    image: mongo:5.0[m
+[32m+[m[32m    ports:[m
+[32m+[m[32m      - "27017:27017"[m
+[32m+[m[32m    volumes:[m
+[32m+[m[32m      - mongodb_data:/data/db[m
+[32m+[m
+[32m+[m[32m  redis:[m
+[32m+[m[32m    image: redis:alpine[m
+[32m+[m[32m    ports:[m
+[32m+[m[32m      - "6379:6379"[m
+[32m+[m
+[32m+[m[32mvolumes:[m
+[32m+[m[32m  mongodb_data:[m
+[32m+[m[32mEnvironment Variables[m
+[32m+[m[32menv[m
+[32m+[m[32m# Backend .env[m
+[32m+[m[32mNODE_ENV=production[m
+[32m+[m[32mPORT=5000[m
+[32m+[m[32mMONGODB_URI=mongodb://localhost:27017/signsmart[m
+[32m+[m[32mREDIS_URL=redis://localhost:6379[m
+[32m+[m[32mJWT_SECRET=your_jwt_secret[m
+[32m+[m[32mJWT_REFRESH_SECRET=your_refresh_secret[m
+[32m+[m[32mAWS_ACCESS_KEY_ID=your_aws_key[m
+[32m+[m[32mAWS_SECRET_ACCESS_KEY=your_aws_secret[m
+[32m+[m[32mS3_BUCKET=your_bucket_name[m
+[32m+[m[32m📊 Performance Optimization[m
+[32m+[m[32mFrontend[m
+[32m+[m[32mCode splitting with React.lazy()[m
+[32m+[m
+[32m+[m[32mImage optimization and lazy loading[m
+[32m+[m
+[32m+[m[32mBundle analysis and optimization[m
+[32m+[m
+[32m+[m[32mService Worker for caching[m
+[32m+[m
+[32m+[m[32mBackend[m
+[32m+[m[32mDatabase indexing[m
+[32m+[m
+[32m+[m[32mQuery optimization[m
+[32m+[m
+[32m+[m[32mRedis caching[m
+[32m+[m
+[32m+[m[32mConnection pooling[m
+[32m+[m
+[32m+[m[32mCompression middleware[m
+[32m+[m
+[32m+[m[32mDatabase[m
+[32m+[m[32mProper indexing on frequently queried fields[m
+[32m+[m
+[32m+[m[32mAggregation pipelines for complex queries[m
+[32m+[m
+[32m+[m[32mRegular database maintenance[m
+[32m+[m
+[32m+[m[32mBackup strategies[m
+[32m+[m
+[32m+[m[32m🤝 Contributing[m
+[32m+[m[32mWe welcome contributions! Please see our Contributing Guide for details.[m
+[32m+[m
+[32m+[m[32mDevelopment Workflow[m
+[32m+[m[32mFork the repository[m
+[32m+[m
+[32m+[m[32mCreate a feature branch (git checkout -b feature/amazing-feature)[m
+[32m+[m
+[32m+[m[32mCommit your changes (git commit -m 'Add amazing feature')[m
+[32m+[m
+[32m+[m[32mPush to the branch (git push origin feature/amazing-feature)[m
+[32m+[m
+[32m+[m[32mOpen a Pull Request[m
+[32m+[m
+[32m+[m[32mCode Standards[m
+[32m+[m[32mESLint for JavaScript/TypeScript[m
+[32m+[m
+[32m+[m[32mPrettier for code formatting[m
+[32m+[m
+[32m+[m[32mConventional commits for commit messages[m
+[32m+[m
+[32m+[m[32mComprehensive testing required[m
+[32m+[m
+[32m+[m[32m📈 Monitoring & Analytics[m
+[32m+[m[32mApplication Monitoring[m
+[32m+[m[32mPerformance metrics with New Relic or DataDog[m
+[32m+[m
+[32m+[m[32mError tracking with Sentry[m
+[32m+[m
+[32m+[m[32mUser analytics with Google Analytics[m
+[32m+[m
+[32m+[m[32mCustom event tracking for learning metrics[m
+[32m+[m
+[32m+[m[32mBusiness Metrics[m
+[32m+[m[32mUser engagement and retention[m
+[32m+[m
+[32m+[m[32mLearning progress analytics[m
+[32m+[m
+[32m+[m[32mFeature usage statistics[m
+[32m+[m
+[32m+[m[32mConversion funnels[m
+[32m+[m
+[32m+[m[32m🔮 Future Enhancements[m
+[32m+[m[32mShort-term (v1.1-v1.3)[m
+[32m+[m[32mAdvanced AI sign recognition[m
+[32m+[m
+[32m+[m[32mMulti-language support (ASL, BSL, Auslan)[m
+[32m+[m
+[32m+[m[32mMobile app (React Native)[m
+[32m+[m
+[32m+[m[32mSocial features and user profiles[m
+[32m+[m
+[32m+[m[32mMedium-term (v1.4-v2.0)[m
+[32m+[m[32mTeacher dashboard for classrooms[m
+[32m+[m
+[32m+[m[32mVR/AR integration[m
+[32m+[m
+[32m+[m[32mAdvanced analytics dashboard[m
+[32m+[m
+[32m+[m[32mAPI for third-party integrations[m
+[32m+[m
+[32m+[m[32mLong-term (v2.0+)[m
+[32m+[m[32mReal-time sign language translation[m
+[32m+[m
+[32m+[m[32mCommunity content creation tools[m
+[32m+[m
+[32m+[m[32mEnterprise features for organizations[m
+[32m+[m
+[32m+[m[32mAdvanced machine learning models[m
+[32m+[m
+[32m+[m[32m🐛 Troubleshooting[m
+[32m+[m[32mCommon Issues[m
+[32m+[m[32mMongoDB Connection Issues[m
+[32m+[m
+[32m+[m[32mbash[m
+[32m+[m[32m# Check if MongoDB is running[m
+[32m+[m[32msudo systemctl status mongod[m
+[32m+[m[32msudo systemctl start mongod[m
+[32m+[m[32mNode Version Issues[m
+[32m+[m
+[32m+[m[32mbash[m
+[32m+[m[32m# Use correct Node version[m
+[32m+[m[32mnvm use 16[m
+[32m+[m[32mPort Already in Use[m
+[32m+[m
+[32m+[m[32mbash[m
+[32m+[m[32m# Find and kill process using port[m
+[32m+[m[32mlsof -ti:3000 | xargs kill -9[m
+[32m+[m[32mEnvironment Variables[m
+[32m+[m
+[32m+[m[32mEnsure all required environment variables are set[m
+[32m+[m
+[32m+[m[32mCheck .env file format and location[m
+[32m+[m
+[32m+[m[32m📞 Support[m
+[32m+[m[32mDocumentation: docs.signsmart.com[m
+[32m+[m
+[32m+[m[32mCommunity Forum: community.signsmart.com[m
+[32m+[m
+[32m+[m[32mEmail Support: support@signsmart.com[m
+[32m+[m
+[32m+[m[32mIssue Tracker: GitHub Issues[m
+[32m+[m
+[32m+[m[32mAPI Documentation: api.signsmart.com[m
+[32m+[m
+[32m+[m[32m📄 License[m
+[32m+[m[32mThis project is licensed under the MIT License - see the LICENSE file for details.[m
+[32m+[m
+[32m+[m[32m🙏 Acknowledgments[m
+[32m+[m[32mSign language experts and consultants[m
+[32m+[m
+[32m+[m[32mThe Deaf community for invaluable feedback[m
+[32m+[m
+[32m+[m[32mOpen source libraries and tools[m
+[32m+[m
+[32m+[m[32mContributors and beta testers[m
+[32m+[m
+[32m+[m[32mResearch institutions supporting sign language technology[m
+[32m+[m
+[32m+[m[32m<div align="center">[m
+[32m+[m[32mMade with ❤️ for the Deaf and hard-of-hearing community[m
+[32m+[m
+[32m+[m[32mBreaking communication barriers, one sign at a time[m
+[32m+[m
+[32m+[m[32mVersion: 1.0.0 | Last Updated: March 2024[m
+[32m+[m
+[32m+[m[32m</div> ```[m
+[32m+[m[32mThis enhanced README now includes comprehensive information about:[m
+[32m+[m
+[32m+[m[32mFull-stack architecture with frontend, backend, and database details[m
+[32m+[m
+[32m+[m[32mMongoDB integration with detailed schema designs[m
+[32m+[m
+[32m+[m[32mComplete API documentation with all endpoints[m
+[32m+[m
+[32m+[m[32mBackend technology stack and security features[m
+[32m+[m
+[32m+[m[32mDeployment instructions including Docker configuration[m
+[32m+[m
+[32m+[m[32mDatabase models for users, progress, signs, and game sessions[m
+[32m+[m
+[32m+[m[32mPerformance optimization strategies[m
+[32m+[m
+[32m+[m[32mMonitoring and analytics setup[m
+[32m+[m
+[32m+[m[32mTroubleshooting guide for common issues[m
+\ No newline at end of file[m
