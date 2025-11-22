@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Dependencies
 node_modules/
 */node_modules/
@@ -40,5 +41,7 @@ coverage/
 # nyc test coverage
 .nyc_output
 
+=======
+>>>>>>> e43dac053e69bd679d35fcd375af5dfe3430d64d
 .github/instructions/kluster-code-verify.instructions.md
 .kluster
