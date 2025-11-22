@@ -1,0 +1,3982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SignSmart - Learn Sign Language</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        /* SignSmart Theme Colors */
+        :root {
+            --signsmart-blue: #4A90E2;
+            --signsmart-green: #50C878;
+            --signsmart-purple: #8A2BE2;
+            --signsmart-orange: #FF7F50;
+            --signsmart-yellow: #FFD700;
+            --signsmart-red: #FF6B6B;
+            --light: #f8f9fa;
+            --dark: #2d3436;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Open Sans', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--signsmart-blue), var(--signsmart-purple));
+            color: var(--dark);
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        /* Background with sign language image */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1581333100574-6b5a6c6b9b0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15;
+            z-index: -1;
+        }
+        
+        /* Overlay to ensure text readability */
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: -1;
+        }
+        
+        /* Enhanced Splash Screen Styles */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--signsmart-blue), var(--signsmart-purple));
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            color: white;
+            overflow: hidden;
+        }
+
+        .splash-logo {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            animation: bounce 1.5s infinite alternate, colorPulse 2s ease-in-out infinite, rotate 3s linear infinite;
+            transform-origin: center;
+        }
+
+        .splash-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 10px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 0.5s forwards, textGlow 2s ease-in-out infinite 1.5s;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .splash-subtext {
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fadeIn 1s ease-in-out 1s forwards, slideUp 1s ease-out 1s forwards;
+            margin-bottom: 30px;
+        }
+
+        .loading-spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top: 4px solid white;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-top: 20px;
+        }
+
+        .splash-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 50%;
+            animation: float 15s infinite linear;
+        }
+
+        @keyframes bounce {
+            from { transform: translateY(0px) scale(1); }
+            to { transform: translateY(-20px) scale(1.1); }
+        }
+
+        @keyframes colorPulse {
+            0%, 100% { filter: hue-rotate(0deg); }
+            50% { filter: hue-rotate(45deg); }
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; }
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes textGlow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 0.8), 0 0 30px rgba(255, 255, 255, 0.6); }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); }
+            to { transform: translateY(0); }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* App Store Buttons */
+        .app-download {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .app-btn {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .app-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.8);
+        }
+        
+        .app-btn:active {
+            transform: translateY(-1px);
+            box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+        }
+        
+        .app-icon {
+            font-size: 1.8rem;
+            margin-right: 10px;
+        }
+        
+        .app-text {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .app-text span:first-child {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+        
+        .app-text span:last-child {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        
+        /* Social Media Icons */
+        .social-icons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        .social-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+        }
+        
+        .social-icon:hover {
+            background: var(--signsmart-yellow);
+            color: var(--dark);
+            transform: translateY(-3px);
+        }
+        
+        .social-icon:active {
+            transform: translateY(-1px);
+        }
+        
+        /* Enhanced Logo with Deaf Community Image */
+        .signsmart-header {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 15px 20px;
+            text-align: center;
+            border-bottom: 3px solid var(--signsmart-yellow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--signsmart-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path d="M50,15 C65,15 77,27 77,42 C77,57 65,69 50,69 C35,69 23,57 23,42 C23,27 35,15 50,15 Z" fill="white" opacity="0.9"/><path d="M40,35 C40,32 42,30 45,30 C48,30 50,32 50,35 L50,49 C50,52 48,54 45,54 C42,54 40,52 40,49 L40,35 Z" fill="white"/><path d="M55,35 C55,32 57,30 60,30 C63,30 65,32 65,35 L65,49 C65,52 63,54 60,54 C57,54 55,52 55,49 L55,35 Z" fill="white"/><path d="M35,50 C33,50 32,51 32,53 C32,55 33,56 35,56 L65,56 C67,56 68,55 68,53 C68,51 67,50 65,50 L35,50 Z" fill="white"/><path d="M40,60 C38,60 37,61 37,63 C37,65 38,66 40,66 L60,66 C62,66 63,65 63,63 C63,61 62,60 60,60 L40,60 Z" fill="white"/><path d="M45,70 C43,70 42,71 42,73 C42,75 43,76 45,76 L55,76 C57,76 58,75 58,73 C58,71 57,70 55,70 L45,70 Z" fill="white"/></svg>');
+            background-size: 70%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .logo-text {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--signsmart-blue);
+            letter-spacing: -0.5px;
+        }
+        
+        /* Responsive Navigation */
+        .signsmart-nav {
+            background: var(--signsmart-green);
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 20px;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .nav-links a:hover {
+            background: var(--signsmart-yellow);
+            color: var(--dark);
+        }
+        
+        .nav-links a.active {
+            background: rgba(255, 255, 255, 0.2);
+            font-weight: 600;
+        }
+        
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hamburger {
+                display: block;
+                position: absolute;
+                right: 15px;
+                top: 50%;
+                transform: translateY(-50%);
+            }
+            
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: var(--signsmart-green);
+                z-index: 100;
+                padding: 10px 0;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .nav-links a {
+                margin: 5px 15px;
+                text-align: center;
+                padding: 10px;
+            }
+            
+            .app-download {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .app-btn {
+                width: 200px;
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Page Content Styles */
+        .page-content {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        .page-content.active {
+            display: block;
+        }
+        
+        /* Home Page Styles */
+        .welcome-section {
+            text-align: center;
+            margin: 40px 0;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            border: 2px solid var(--signsmart-blue);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .welcome-section h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--signsmart-blue);
+            font-weight: 600;
+        }
+        
+        .welcome-section p {
+            font-size: 1.1rem;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+        
+        .feature-card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid var(--signsmart-purple);
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+            cursor: pointer;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+        }
+        
+        .feature-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            color: var(--signsmart-blue);
+            font-weight: 600;
+        }
+        
+        .feature-card p {
+            color: #666;
+            line-height: 1.5;
+        }
+        
+        /* Compact Footer Styles */
+        .signsmart-footer {
+            background: var(--signsmart-purple);
+            color: white;
+            text-align: center;
+            padding: 5px 5px;
+            margin-top: 5px;
+            border-top: 3px dashed var(--signsmart-yellow);
+        }
+        
+        .footer-content {
+            max-width: 2000px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .footer-links {
+            display: flex;
+            gap: 20px;
+            margin: 15px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .footer-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .footer-links a:hover {
+            color: var(--signsmart-yellow);
+        }
+        
+        .footer-bottom {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            width: 80%;
+            font-size: 0.9rem;
+        }
+        
+        /* The rest of your original CSS continues here... */
+        
+        /* Lessons Page Styles */
+        .app-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .app-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .video-panel, .control-panel {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--signsmart-yellow);
+        }
+        
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 400px;
+            border-radius: 12px;
+            overflow: hidden;
+            background: #f0f0f0;
+            margin-bottom: 20px;
+            border: 2px solid var(--signsmart-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-size: 1.1rem;
+        }
+        
+        #webcam {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+        
+        #output-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+        }
+        
+        .video-placeholder {
+            text-align: center;
+            padding: 20px;
+        }
+        
+        .video-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            color: var(--signsmart-blue);
+        }
+        
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .status-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        .status-dot.active {
+            background-color: var(--signsmart-green);
+            box-shadow: 0 0 10px var(--signsmart-green);
+        }
+        
+        .status-dot.inactive {
+            background-color: var(--signsmart-red);
+        }
+        
+        .lesson-section {
+            margin-bottom: 25px;
+        }
+        
+        h2 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: var(--signsmart-blue);
+            font-weight: 600;
+        }
+        
+        .lesson-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .lesson-btn {
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid var(--signsmart-purple);
+            border-radius: 20px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .lesson-btn:hover {
+            background: var(--signsmart-purple);
+            color: white;
+        }
+        
+        .lesson-btn.active {
+            background: var(--signsmart-blue);
+            border-color: var(--signsmart-blue);
+            color: white;
+        }
+        
+        .target-sign {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            border: 2px dashed var(--signsmart-yellow);
+        }
+        
+        .sign-icon {
+            font-size: 2.5rem;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--signsmart-yellow);
+            border-radius: 12px;
+        }
+        
+        .sign-info {
+            flex: 1;
+        }
+        
+        .sign-name {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 5px;
+            color: var(--signsmart-red);
+        }
+        
+        .sign-description {
+            font-size: 0.95rem;
+            opacity: 0.8;
+            line-height: 1.4;
+        }
+        
+        .feedback-container {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid var(--signsmart-green);
+        }
+        
+        .feedback-title {
+            font-size: 1.1rem;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--signsmart-green);
+            font-weight: 600;
+        }
+        
+        .feedback-message {
+            margin-bottom: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+        
+        .feedback-good {
+            background: rgba(80, 200, 120, 0.15);
+            border-left: 4px solid var(--signsmart-green);
+        }
+        
+        .feedback-average {
+            background: rgba(255, 215, 0, 0.2);
+            border-left: 4px solid var(--signsmart-yellow);
+        }
+        
+        .feedback-poor {
+            background: rgba(255, 107, 107, 0.15);
+            border-left: 4px solid var(--signsmart-red);
+        }
+        
+        .progress-container {
+            margin-top: 15px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: rgba(0, 0, 0, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 5px;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--signsmart-blue);
+            border-radius: 4px;
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+        
+        .progress-text {
+            font-size: 0.85rem;
+            text-align: right;
+            color: #666;
+        }
+        
+        .controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        button {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+        
+        .btn-primary {
+            background: var(--signsmart-blue);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--signsmart-green);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-secondary {
+            background: var(--signsmart-yellow);
+            color: var(--dark);
+            border: 2px solid var(--signsmart-yellow);
+        }
+        
+        .btn-secondary:hover {
+            background: transparent;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .stat-card {
+            background: rgba(255, 255, 255, 0.6);
+            padding: 15px;
+            border-radius: 12px;
+            text-align: center;
+            border: 2px solid var(--signsmart-purple);
+        }
+        
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--signsmart-red);
+        }
+        
+        .stat-label {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 500;
+        }
+        
+        .tips {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            border: 2px dotted var(--signsmart-orange);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .tip-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+        
+        .tip-icon {
+            margin-right: 10px;
+            color: var(--signsmart-red);
+        }
+        
+        /* Level Selection Styles */
+        .level-section {
+            margin-bottom: 25px;
+        }
+        
+        .level-selector {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .level-btn {
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid var(--signsmart-purple);
+            border-radius: 20px;
+            color: var(--dark);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            flex: 1;
+            min-width: 120px;
+            text-align: center;
+        }
+        
+        .level-btn:hover {
+            background: var(--signsmart-purple);
+            color: white;
+            transform: translateY(-3px);
+        }
+        
+        .level-btn.active {
+            background: var(--signsmart-blue);
+            border-color: var(--signsmart-blue);
+            color: white;
+        }
+        
+        .level-description {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.6);
+            border-radius: 12px;
+            margin-top: 10px;
+            border: 2px dashed var(--signsmart-orange);
+        }
+        
+        /* Games Page Styles */
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+        
+        .game-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--signsmart-yellow);
+            transition: transform 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .game-image {
+            height: 180px;
+            background: var(--signsmart-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+        
+        .game-content {
+            padding: 20px;
+        }
+        
+        .game-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--signsmart-blue);
+            font-weight: 600;
+        }
+        
+        .game-description {
+            margin-bottom: 15px;
+            color: var(--dark);
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        
+        /* Game Containers */
+        .game-container {
+            display: none;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+            border: 2px solid var(--signsmart-green);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-container.active {
+            display: block;
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .game-score {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--signsmart-red);
+        }
+        
+        /* Memory Game Styles */
+        .memory-board {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .memory-board {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .memory-board {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        .memory-card {
+            aspect-ratio: 1;
+            background: var(--signsmart-blue);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.5s;
+        }
+        
+        .memory-card.flipped {
+            transform: rotateY(180deg);
+        }
+        
+        .memory-card .front, .memory-card .back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+        }
+        
+        .memory-card .front {
+            background: var(--signsmart-yellow);
+            color: var(--dark);
+        }
+        
+        .memory-card .back {
+            background: var(--signsmart-purple);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        /* Quiz Game Styles */
+        .quiz-container {
+            text-align: center;
+        }
+        
+        .quiz-question {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: var(--signsmart-blue);
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .quiz-option {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid var(--signsmart-purple);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-option:hover {
+            background: var(--signsmart-purple);
+            color: white;
+        }
+        
+        .quiz-option.correct {
+            background: var(--signsmart-green);
+            color: white;
+        }
+        
+        .quiz-option.incorrect {
+            background: var(--signsmart-red);
+            color: white;
+        }
+        
+        .quiz-feedback {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+        }
+        
+        /* Finger Spelling Game Styles */
+        .spelling-container {
+            text-align: center;
+        }
+        
+        .spelling-word {
+            font-size: 2rem;
+            margin: 20px 0;
+            color: var(--signsmart-blue);
+            font-weight: 700;
+            letter-spacing: 5px;
+        }
+        
+        .spelling-input {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+        
+        .spelling-letter {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--signsmart-yellow);
+            border-radius: 8px;
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .spelling-options {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        @media (max-width: 768px) {
+            .spelling-options {
+                grid-template-columns: repeat(4, 1fr);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .spelling-options {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        
+        .spelling-option {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid var(--signsmart-purple);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        
+        .spelling-option:hover {
+            background: var(--signsmart-purple);
+            color: white;
+        }
+        
+        /* Gallery Page Styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .gallery-item {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--signsmart-purple);
+            transition: transform 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+        }
+        
+        .gallery-image {
+            height: 200px;
+            background: var(--signsmart-green);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        
+        .gallery-caption {
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .gallery-caption h3 {
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            color: var(--signsmart-blue);
+            font-weight: 600;
+        }
+        
+        .gallery-caption p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* 3D Sign Viewer */
+        .sign-viewer {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .sign-viewer.active {
+            display: flex;
+        }
+        
+        .sign-viewer-content {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+        }
+        
+        .close-viewer {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--signsmart-red);
+        }
+        
+        .sign-3d-container {
+            width: 100%;
+            height: 300px;
+            background: #f0f0f0;
+            border-radius: 12px;
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .sign-hand {
+            width: 150px;
+            height: 200px;
+            background: #ffcc99;
+            border-radius: 50% 50% 20% 20%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+        }
+        
+        .sign-finger {
+            position: absolute;
+            background: #ffcc99;
+            border-radius: 10px;
+        }
+        
+        .sign-thumb {
+            width: 30px;
+            height: 50px;
+            top: 30px;
+            left: -20px;
+            transform: rotate(-20deg);
+            transform-origin: bottom right;
+        }
+        
+        .sign-index {
+            width: 25px;
+            height: 80px;
+            top: 20px;
+            left: 35px;
+        }
+        
+        .sign-middle {
+            width: 25px;
+            height: 90px;
+            top: 15px;
+            left: 65px;
+        }
+        
+        .sign-ring {
+            width: 25px;
+            height: 80px;
+            top: 20px;
+            left: 95px;
+        }
+        
+        .sign-pinky {
+            width: 20px;
+            height: 70px;
+            top: 25px;
+            left: 125px;
+        }
+        
+        .sign-controls {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            justify-content: center;
+        }
+        
+        .sign-control {
+            padding: 10px 15px;
+            background: var(--signsmart-blue);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .sign-control:hover {
+            background: var(--signsmart-green);
+        }
+        
+        .sign-description-detailed {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.8);
+            border-radius: 8px;
+            border-left: 4px solid var(--signsmart-yellow);
+        }
+        
+        /* About Page Styles */
+        .about-content {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+            border: 2px solid var(--signsmart-yellow);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .about-content h2 {
+            color: var(--signsmart-blue);
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .about-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+            color: #555;
+        }
+        
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+        
+        .team-member {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px solid var(--signsmart-purple);
+        }
+        
+        .member-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--signsmart-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 2rem;
+        }
+        
+        .team-member h3 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+            color: var(--signsmart-blue);
+            font-weight: 600;
+        }
+        
+        .team-member p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+        
+        /* Authentication Styles */
+        .auth-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .auth-form {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 2px solid var(--signsmart-yellow);
+            position: relative;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--signsmart-red);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--signsmart-blue);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid var(--signsmart-purple);
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus {
+            border-color: var(--signsmart-blue);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.3);
+        }
+        
+        .form-toggle {
+            text-align: center;
+            margin-top: 20px;
+        }
+        
+        .form-toggle a {
+            color: var(--signsmart-blue);
+            text-decoration: none;
+            font-weight: 600;
+        }
+        
+        .form-toggle a:hover {
+            text-decoration: underline;
+        }
+        
+        .user-info {
+            display: none;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--signsmart-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            color: var(--dark);
+        }
+        
+        /* SmartBot Styles */
+        .smartbot-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        
+        .smartbot-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--signsmart-blue);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            border: 3px solid white;
+        }
+        
+        .smartbot-toggle:hover {
+            transform: scale(1.1);
+            background: var(--signsmart-green);
+        }
+        
+        .smartbot-window {
+            position: absolute;
+            bottom: 70px;
+            right: 0;
+            width: 350px;
+            height: 450px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid var(--signsmart-yellow);
+        }
+        
+        .smartbot-header {
+            background: var(--signsmart-blue);
+            color: white;
+            padding: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .smartbot-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--signsmart-yellow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--dark);
+        }
+        
+        .smartbot-messages {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .message {
+            padding: 10px 15px;
+            border-radius: 12px;
+            max-width: 80%;
+            font-size: 0.95rem;
+        }
+        
+        .bot-message {
+            background: rgba(74, 144, 226, 0.1);
+            align-self: flex-start;
+            border-bottom-left-radius: 5px;
+        }
+        
+        .user-message {
+            background: rgba(255, 215, 0, 0.2);
+            align-self: flex-end;
+            border-bottom-right-radius: 5px;
+        }
+        
+        .smartbot-input {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #eee;
+        }
+        
+        .smartbot-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            outline: none;
+            font-size: 0.95rem;
+        }
+        
+        .smartbot-input button {
+            background: var(--signsmart-blue);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            margin-left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* Enhanced Styles */
+        .nav-indicator {
+            position: absolute;
+            bottom: -12px;
+            left: 0;
+            height: 3px;
+            background: var(--signsmart-yellow);
+            width: 0;
+            transition: all 0.3s ease;
+            border-radius: 3px;
+        }
+        
+        .nav-links li {
+            position: relative;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .btn-loading {
+            position: relative;
+            color: transparent !important;
+        }
+        
+        .btn-loading:after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+            border: 2px solid transparent;
+            border-top-color: #ffffff;
+            border-radius: 50%;
+            animation: button-loading-spinner 1s ease infinite;
+        }
+        
+        @keyframes button-loading-spinner {
+            from {
+                transform: rotate(0turn);
+            }
+            to {
+                transform: rotate(1turn);
+            }
+        }
+        
+        .sign-icon {
+            transition: transform 0.3s ease;
+        }
+        
+        .target-sign:hover .sign-icon {
+            transform: scale(1.1);
+        }
+        
+        .level-btn {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .level-btn:after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transition: width 0.6s, height 0.6s, top 0.6s, left 0.6s;
+            transform: translate(-50%, -50%);
+        }
+        
+        .level-btn:hover:after {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .stat-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+        
+        @keyframes ripple-animation {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        /* Responsive Feature Cards */
+        .feature-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            border: 2px solid var(--signsmart-green);
+        }
+        
+        .feature-content.active {
+            display: block;
+        }
+        
+        .feature-content h3 {
+            color: var(--signsmart-blue);
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+        
+        .feature-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+        
+        .feature-content ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .feature-content li {
+            margin-bottom: 8px;
+        }
+        
+        .feature-content .btn-primary {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Enhanced Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-particles" id="splash-particles"></div>
+        <div class="splash-logo">🤟</div>
+        <div class="splash-text">SignSmart</div>
+        <div class="splash-subtext">Making Learning Fun!</div>
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Rest of your original HTML continues... -->
+    <!-- Sign In Modal -->
+    <div id="signin-modal" class="auth-container">
+        <div class="auth-form">
+            <button class="close-btn" id="close-signin">&times;</button>
+            <h2>Welcome Back! 🎉</h2>
+            <p>Sign in to continue your sign language journey</p>
+            <form id="signin-form">
+                <div class="form-group">
+                    <label for="signin-email">Email</label>
+                    <input type="email" id="signin-email" placeholder="your.email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="signin-password">Password</label>
+                    <input type="password" id="signin-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Sign In</button>
+            </form>
+            <div class="form-toggle">
+                <p>Don't have an account? <a href="#" id="show-signup">Sign Up</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signup-modal" class="auth-container">
+        <div class="auth-form">
+            <button class="close-btn" id="close-signup">&times;</button>
+            <h2>Join SignSmart! 🎯</h2>
+            <p>Create an account to track your progress</p>
+            <form id="signup-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" placeholder="Your full name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" placeholder="your.email@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" placeholder="Create a password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm">Confirm Password</label>
+                    <input type="password" id="signup-confirm" placeholder="Confirm your password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-age">Age Group</label>
+                    <select id="signup-age" style="width: 100%; padding: 12px; border-radius: 8px; border: 2px solid var(--signsmart-purple);">
+                        <option value="child">Child (Under 13)</option>
+                        <option value="teen">Teen (13-17)</option>
+                        <option value="adult">Adult (18+)</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn-primary" style="width: 100%;">Sign Up</button>
+            </form>
+            <div class="form-toggle">
+                <p>Already have an account? <a href="#" id="show-signin">Sign In</a></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3D Sign Viewer -->
+    <div class="sign-viewer" id="sign-viewer">
+        <div class="sign-viewer-content">
+            <button class="close-viewer" id="close-viewer">&times;</button>
+            <h2 id="viewer-title">Sign Language Demonstration</h2>
+            
+            <div class="sign-3d-container">
+                <div class="sign-hand" id="sign-hand">
+                    <div class="sign-finger sign-thumb"></div>
+                    <div class="sign-finger sign-index"></div>
+                    <div class="sign-finger sign-middle"></div>
+                    <div class="sign-finger sign-ring"></div>
+                    <div class="sign-finger sign-pinky"></div>
+                </div>
+            </div>
+            
+            <div class="sign-controls">
+                <button class="sign-control" id="rotate-left">↶ Rotate Left</button>
+                <button class="sign-control" id="rotate-right">↷ Rotate Right</button>
+                <button class="sign-control" id="reset-view">Reset View</button>
+            </div>
+            
+            <div class="sign-description-detailed" id="sign-description-detailed">
+                <h3>How to make this sign:</h3>
+                <p id="sign-instructions">Detailed instructions will appear here.</p>
+            </div>
+        </div>
+    </div>
+
+    <header class="signsmart-header">
+        <div class="logo">
+            <div class="logo-icon"></div>
+            <div class="logo-text">SignSmart</div>
+        </div>
+        <div class="user-info" id="user-info">
+            <div class="user-avatar" id="user-avatar">U</div>
+            <span id="user-name">User</span>
+            <button id="signout-btn" class="btn-secondary">Sign Out</button>
+        </div>
+        <div id="auth-buttons">
+            <button id="signin-header-btn" class="btn-primary">Sign In</button>
+            <button id="signup-header-btn" class="btn-secondary">Sign Up</button>
+        </div>
+    </header>
+    
+    <nav class="signsmart-nav">
+        <button class="hamburger" id="hamburger">
+            <i class="fas fa-bars"></i>
+        </button>
+        <ul class="nav-links" id="nav-links">
+            <li><a href="#" data-page="home" class="active">🏠 Home</a></li>
+            <li><a href="#" data-page="games">🎮 Games</a></li>
+            <li><a href="#" data-page="lessons">📚 Lessons</a></li>
+            <li><a href="#" data-page="gallery">🖼️ Gallery</a></li>
+            <li><a href="#" data-page="about">ℹ️ About</a></li>
+        </ul>
+    </nav>
+    
+    <div class="container">
+        <!-- Home Page -->
+        <div id="home-page" class="page-content active">
+            <div class="welcome-section">
+                <h1>Welcome to SignSmart!</h1>
+                <p>Your journey to learning sign language starts here. SignSmart makes learning fun and interactive for everyone, from complete beginners to advanced learners.</p>
+                <p>Explore our lessons, play educational games, browse our sign gallery, and get personalized feedback from our AI assistant.</p>
+                
+                <!-- App Download Buttons -->
+                <div class="app-download">
+                    <a href="#" class="app-btn" id="google-play-btn">
+                        <div class="app-icon">
+                            <i class="fab fa-google-play"></i>
+                        </div>
+                        <div class="app-text">
+                            <span>GET IT ON</span>
+                            <span>Google Play</span>
+                        </div>
+                    </a>
+                    <a href="#" class="app-btn" id="app-store-btn">
+                        <div class="app-icon">
+                            <i class="fab fa-apple"></i>
+                        </div>
+                        <div class="app-text">
+                            <span>Download on the</span>
+                            <span>App Store</span>
+                        </div>
+                    </a>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card" data-feature="lessons">
+                        <div class="feature-icon">📚</div>
+                        <h3>Interactive Lessons</h3>
+                        <p>Learn at your own pace with our structured lessons for all skill levels.</p>
+                    </div>
+                    <div class="feature-card" data-feature="games">
+                        <div class="feature-icon">🎮</div>
+                        <h3>Fun Games</h3>
+                        <p>Reinforce your learning with engaging sign language games.</p>
+                    </div>
+                    <div class="feature-card" data-feature="ai">
+                        <div class="feature-icon">🤖</div>
+                        <h3>AI Assistant</h3>
+                        <p>Get real-time feedback on your signing with our SmartBot AI.</p>
+                    </div>
+                </div>
+                
+                <!-- Feature Content Sections -->
+                <div class="feature-content" id="lessons-content">
+                    <h3>Interactive Lessons</h3>
+                    <p>Our interactive lessons are designed to help you learn sign language step by step:</p>
+                    <ul>
+                        <li>Beginner-friendly lessons starting with the alphabet and numbers</li>
+                        <li>Progressive difficulty levels to match your learning pace</li>
+                        <li>Real-time feedback on your signing accuracy</li>
+                        <li>Visual demonstrations and detailed explanations</li>
+                        <li>Track your progress with detailed statistics</li>
+                    </ul>
+                    <p>Whether you're learning for personal growth, to communicate with friends or family, or for professional development, our lessons will guide you every step of the way.</p>
+                    <button class="btn-primary" id="go-to-lessons">Start Learning Now</button>
+                </div>
+                
+                <div class="feature-content" id="games-content">
+                    <h3>Fun Games</h3>
+                    <p>Learning sign language doesn't have to be boring! Our games make practice enjoyable:</p>
+                    <ul>
+                        <li><strong>Sign Match:</strong> Match signs with their meanings in this memory card game</li>
+                        <li><strong>Speed Signs:</strong> Test your reaction time by identifying signs quickly</li>
+                        <li><strong>Sign Puzzle:</strong> Complete puzzles by arranging sign language letters and words</li>
+                        <li><strong>Sign Quiz:</strong> Answer multiple-choice questions about sign language</li>
+                        <li><strong>Finger Spelling Challenge:</strong> Practice your finger spelling with timed challenges</li>
+                        <li><strong>Sign Charades:</strong> Act out signs for others to guess</li>
+                    </ul>
+                    <p>Games are a proven way to reinforce learning and improve retention. Challenge yourself and have fun while mastering sign language!</p>
+                    <button class="btn-primary" id="go-to-games">Play Games Now</button>
+                </div>
+                
+                <div class="feature-content" id="ai-content">
+                    <h3>AI Assistant</h3>
+                    <p>Our SmartBot AI assistant provides personalized guidance throughout your learning journey:</p>
+                    <ul>
+                        <li>Real-time feedback on your hand positioning and movements</li>
+                        <li>Personalized learning recommendations based on your progress</li>
+                        <li>Answer questions about sign language anytime</li>
+                        <li>Provide encouragement and track your improvement</li>
+                        <li>Available 24/7 to support your learning</li>
+                    </ul>
+                    <p>The AI analyzes your signing through your device's camera and provides instant feedback, helping you correct mistakes and perfect your technique faster than traditional learning methods.</p>
+                    <button class="btn-primary" id="try-smartbot">Try SmartBot Now</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Games Page -->
+        <div id="games-page" class="page-content">
+            <h1>Sign Language Games</h1>
+            <p>Practice your sign language skills with these fun and educational games that work offline!</p>
+            
+            <div class="games-grid">
+                <div class="game-card" data-game="memory">
+                    <div class="game-image" style="background: var(--signsmart-blue);">
+                        🧠
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">Sign Match</h3>
+                        <p class="game-description">Match signs with their meanings in this memory card game.</p>
+                        <button class="btn-primary play-game" data-game="memory">Play Now</button>
+                    </div>
+                </div>
+                
+                <div class="game-card" data-game="quiz">
+                    <div class="game-image" style="background: var(--signsmart-green);">
+                        ❓
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">Sign Quiz</h3>
+                        <p class="game-description">Answer multiple-choice questions about sign language.</p>
+                        <button class="btn-primary play-game" data-game="quiz">Play Now</button>
+                    </div>
+                </div>
+                
+                <div class="game-card" data-game="spelling">
+                    <div class="game-image" style="background: var(--signsmart-purple);">
+                        ✋
+                    </div>
+                    <div class="game-content">
+                        <h3 class="game-title">Finger Spelling</h3>
+                        <p class="game-description">Practice your finger spelling with this timed challenge.</p>
+                        <button class="btn-primary play-game" data-game="spelling">Play Now</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Memory Game -->
+            <div class="game-container" id="memory-game">
+                <div class="game-header">
+                    <h2>Sign Match Memory Game</h2>
+                    <div class="game-score">Score: <span id="memory-score">0</span></div>
+                </div>
+                <p>Match the sign with its meaning. Find all pairs to win!</p>
+                <div class="memory-board" id="memory-board">
+                    <!-- Cards will be generated by JavaScript -->
+                </div>
+                <div class="controls">
+                    <button class="btn-secondary" id="back-to-games">Back to Games</button>
+                    <button class="btn-primary" id="reset-memory">Reset Game</button>
+                </div>
+            </div>
+            
+            <!-- Quiz Game -->
+            <div class="game-container" id="quiz-game">
+                <div class="game-header">
+                    <h2>Sign Language Quiz</h2>
+                    <div class="game-score">Score: <span id="quiz-score">0</span>/<span id="quiz-total">0</span></div>
+                </div>
+                <div class="quiz-container">
+                    <div class="quiz-question" id="quiz-question">Question will appear here</div>
+                    <div class="quiz-options" id="quiz-options">
+                        <!-- Options will be generated by JavaScript -->
+                    </div>
+                    <div class="quiz-feedback" id="quiz-feedback"></div>
+                </div>
+                <div class="controls">
+                    <button class="btn-secondary" id="back-to-games-2">Back to Games</button>
+                    <button class="btn-primary" id="next-quiz">Next Question</button>
+                </div>
+            </div>
+            
+            <!-- Spelling Game -->
+            <div class="game-container" id="spelling-game">
+                <div class="game-header">
+                    <h2>Finger Spelling Challenge</h2>
+                    <div class="game-score">Score: <span id="spelling-score">0</span></div>
+                </div>
+                <div class="spelling-container">
+                    <p>Spell the word using sign language letters:</p>
+                    <div class="spelling-word" id="spelling-word">WORD</div>
+                    <div class="spelling-input" id="spelling-input">
+                        <!-- Letters will be generated by JavaScript -->
+                    </div>
+                    <div class="spelling-options" id="spelling-options">
+                        <!-- Letter options will be generated by JavaScript -->
+                    </div>
+                    <div class="quiz-feedback" id="spelling-feedback"></div>
+                </div>
+                <div class="controls">
+                    <button class="btn-secondary" id="back-to-games-3">Back to Games</button>
+                    <button class="btn-primary" id="next-spelling">Next Word</button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lessons Page -->
+        <div id="lessons-page" class="page-content">
+            <h1>Sign Language Lessons</h1>
+            <p>Learn sign language with our interactive lessons and get real-time feedback from our AI.</p>
+            
+            <!-- Level Selection -->
+            <div class="level-section">
+                <h2>Select Your Learning Level</h2>
+                <div class="level-selector">
+                    <div class="level-btn active" data-level="beginner">Beginner 🐣</div>
+                    <div class="level-btn" data-level="intermediate">Intermediate 🐥</div>
+                    <div class="level-btn" data-level="advanced">Advanced 🦅</div>
+                    <div class="level-btn" data-level="expert">Expert 🦉</div>
+                </div>
+                <div class="level-description" id="level-description">
+                    <p><strong>Beginner Level:</strong> Perfect for first-time learners! Start with basic letters, numbers, and simple greetings.</p>
+                </div>
+            </div>
+            
+            <div class="app-container">
+                <div class="video-panel">
+                    <div class="video-container">
+                        <div class="video-placeholder">
+                            <i class="fas fa-video"></i>
+                            <p>Camera will activate when you start a lesson</p>
+                        </div>
+                        <video id="webcam" autoplay playsinline></video>
+                        <canvas id="output-canvas"></canvas>
+                    </div>
+                    
+                    <div class="status-indicator">
+                        <div class="status-dot inactive" id="status-dot"></div>
+                        <span id="status-text">Ready to start learning</span>
+                    </div>
+                    
+                    <div class="stats-container">
+                        <div class="stat-card">
+                            <div class="stat-value" id="signs-learned">0</div>
+                            <div class="stat-label">Signs Learned</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="accuracy-rate">0%</div>
+                            <div class="stat-label">Accuracy Rate</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value" id="session-time">0:00</div>
+                            <div class="stat-label">Session Time</div>
+                        </div>
+                    </div>
+                    
+                    <div class="controls">
+                        <button id="start-btn" class="btn-primary">Start Learning</button>
+                        <button id="reset-btn" class="btn-secondary">Reset Progress</button>
+                    </div>
+                </div>
+                
+                <div class="control-panel">
+                    <div class="lesson-section">
+                        <h2>Current Lesson</h2>
+                        <div class="lesson-selector">
+                            <div class="lesson-btn active" data-lesson="alphabet">Alphabet</div>
+                            <div class="lesson-btn" data-lesson="numbers">Numbers</div>
+                            <div class="lesson-btn" data-lesson="greetings">Greetings</div>
+                            <div class="lesson-btn" data-lesson="basics">Basics</div>
+                        </div>
+                        
+                        <div class="target-sign">
+                            <div class="sign-icon" id="target-sign-icon">A</div>
+                            <div class="sign-info">
+                                <div class="sign-name" id="target-sign-name">Letter A</div>
+                                <div class="sign-description" id="target-sign-desc">Make a fist with your thumb resting against the side of your index finger</div>
+                            </div>
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="lesson-progress" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text"><span id="progress-percent">0%</span> Complete</div>
+                        </div>
+                    </div>
+                    
+                    <div class="feedback-container">
+                        <h2 class="feedback-title">
+                            <span>🤖</span> SignSmart AI Feedback
+                        </h2>
+                        <div class="feedback-message feedback-poor" id="feedback-message">
+                            Start practicing the sign shown above. The AI will analyze your hand position and provide feedback.
+                        </div>
+                        
+                        <div class="progress-container">
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="accuracy-progress" style="width: 0%"></div>
+                            </div>
+                            <div class="progress-text">Accuracy: <span id="accuracy-value">0%</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tips">
+                <h2>🎯 SignSmart Learning Tips</h2>
+                <div class="tip-item">
+                    <div class="tip-icon">💡</div>
+                    <div>Ensure good lighting so the camera can see your hands clearly</div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">💡</div>
+                    <div>Keep your hands within the camera view and avoid fast movements</div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">💡</div>
+                    <div>Practice each sign multiple times to improve muscle memory</div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">💡</div>
+                    <div>Pay attention to finger positioning and hand orientation</div>
+                </div>
+                <div class="tip-item">
+                    <div class="tip-icon">💡</div>
+                    <div>Have fun! Learning sign language is an exciting adventure</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Gallery Page -->
+        <div id="gallery-page" class="page-content">
+            <h1>Sign Language Gallery</h1>
+            <p>Browse our collection of common signs. Click on any sign to see a 3D demonstration!</p>
+            
+            <div class="gallery-grid" id="gallery-grid">
+                <!-- Gallery items will be generated by JavaScript -->
+            </div>
+        </div>
+        
+        <!-- About Page -->
+        <div id="about-page" class="page-content">
+            <h1>About SignSmart</h1>
+            
+            <div class="about-content">
+                <h2>Our Mission</h2>
+                <p>SignSmart is dedicated to making sign language learning accessible, engaging, and effective for everyone. We believe that communication is a fundamental human right, and our platform helps bridge the communication gap between the hearing and Deaf communities.</p>
+                
+                <h2>How It Works</h2>
+                <p>Using advanced AI technology, SignSmart analyzes your hand positions and movements in real-time, providing instant feedback to help you perfect your signing skills. Our interactive lessons and games make learning fun and effective for all ages.</p>
+                
+                <h2>Our Team</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="member-avatar">👨‍💻</div>
+                        <h3></h3>
+                        <p>AI Developer</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👩‍🏫</div>
+                        <h3></h3>
+                        <p>Sign Language Expert</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👨‍🎨</div>
+                        <h3></h3>
+                        <p>UI/UX Designer</p>
+                    </div>
+                    <div class="team-member">
+                        <div class="member-avatar">👩‍💼</div>
+                        <h3> </h3>
+                        <p>Project Manager</p>
+                    </div>
+                </div>
+                
+                <h2>Contact Us</h2>
+                <p>Have questions or feedback? We'd love to hear from you! Email us at <strong>hello@signsmart.com</strong> or follow us on social media.</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- SmartBot Widget -->
+    <div class="smartbot-container">
+        <div class="smartbot-window" id="smartbot-window">
+            <div class="smartbot-header">
+                <div class="smartbot-avatar">🤖</div>
+                <div>
+                    <h3>SmartBot</h3>
+                    <p>Your AI Learning Assistant</p>
+                </div>
+            </div>
+            <div class="smartbot-messages" id="smartbot-messages">
+                <div class="message bot-message">
+                    Hello! I'm SmartBot, your AI learning assistant. How can I help you today?
+                </div>
+            </div>
+            <div class="smartbot-input">
+                <input type="text" id="smartbot-input" placeholder="Type your message...">
+                <button id="smartbot-send"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+        <div class="smartbot-toggle" id="smartbot-toggle">
+            <i class="fas fa-robot"></i>
+        </div>
+    </div>
+    
+    <!-- Enhanced Footer with Social Media Icons -->
+    <footer class="signsmart-footer">
+        <div class="footer-content">
+            <p></p>
+            
+            <!-- Social Media Icons -->
+            <div class="social-icons">
+                <a href="#" class="social-icon" id="facebook-icon">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon" id="twitter-icon">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon" id="instagram-icon">
+                    <i class="fab fa-instagram"></i>
+                </a>
+                <a href="#" class="social-icon" id="linkedin-icon">
+                    <i class="fab fa-linkedin-in"></i>
+                </a>
+                <a href="#" class="social-icon" id="youtube-icon">
+                    <i class="fab fa-youtube"></i>
+                </a>
+            </div>
+            
+            <!-- App Download Buttons in Footer -->
+            <div class="app-download">
+                <a href="#" class="app-btn" id="footer-google-play-btn">
+                    <div class="app-icon">
+                        <i class="fab fa-google-play"></i>
+                    </div>
+                    <div class="app-text">
+                        <span>GET IT ON</span>
+                        <span>Google Play</span>
+                    </div>
+                </a>
+                <a href="#" class="app-btn" id="footer-app-store-btn">
+                    <div class="app-icon">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                    <div class="app-text">
+                        <span>Download on the</span>
+                        <span>App Store</span>
+                    </div>
+                </a>
+            </div>      
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Contact Us</a>
+                <a href="#">Support</a>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 SignSmart - Making Learning Fun</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Global variables
+        let detector;
+        let video;
+        let canvas;
+        let ctx;
+        let isRunning = false;
+        let currentLevel = 'beginner';
+        let currentLesson = 'alphabet';
+        let currentSignIndex = 0;
+        let signsLearned = 0;
+        let correctAttempts = 0;
+        let totalAttempts = 0;
+        let sessionStartTime = null;
+        let sessionTimer = null;
+        let currentUser = null;
+        let smartBotOpen = false;
+        let videoStream = null;
+        let activeFeature = null;
+        let currentGame = null;
+        let memoryCards = [];
+        let flippedCards = [];
+        let matchedPairs = 0;
+        let memoryScore = 0;
+        let quizQuestions = [];
+        let currentQuestionIndex = 0;
+        let quizScore = 0;
+        let spellingWords = [];
+        let currentSpellingWord = '';
+        let spellingScore = 0;
+        let currentRotation = 0;
+        
+        // Level descriptions
+        const levelDescriptions = {
+            beginner: "Perfect for first-time learners! Start with basic letters, numbers, and simple greetings.",
+            intermediate: "Build on your basics with common phrases, questions, and everyday vocabulary.",
+            advanced: "Expand your vocabulary with complex signs, sentence structure, and conversational skills.",
+            expert: "Master advanced concepts, regional variations, and specialized vocabulary for fluency."
+        };
+        
+        // Lesson data by level
+        const lessons = {
+            beginner: {
+                alphabet: [
+                    { name: 'Letter A', icon: 'A', description: 'Make a fist with your thumb resting against the side of your index finger' },
+                    { name: 'Letter B', icon: 'B', description: 'Hold your hand up with fingers together and thumb across palm' },
+                    { name: 'Letter C', icon: 'C', description: 'Form a C shape with your thumb and fingers' },
+                    { name: 'Letter D', icon: 'D', description: 'Point index finger up with thumb and other fingers curled' },
+                    { name: 'Letter E', icon: 'E', description: 'Fold fingers into palm with thumb across fingers' }
+                ],
+                numbers: [
+                    { name: 'Number 1', icon: '1', description: 'Hold up your index finger' },
+                    { name: 'Number 2', icon: '2', description: 'Hold up your index and middle fingers' },
+                    { name: 'Number 3', icon: '3', description: 'Hold up your index, middle, and ring fingers' },
+                    { name: 'Number 4', icon: '4', description: 'Hold up all four fingers with thumb tucked in' },
+                    { name: 'Number 5', icon: '5', description: 'Hold up all five fingers' }
+                ],
+                greetings: [
+                    { name: 'Hello', icon: '👋', description: 'Wave your hand back and forth' },
+                    { name: 'Thank You', icon: '🙏', description: 'Move your hand forward from your chin' },
+                    { name: 'Please', icon: '🤲', description: 'Rub your chest in a circular motion' },
+                    { name: 'Sorry', icon: '😔', description: 'Make a fist and rub it in a circle on your chest' },
+                    { name: 'Goodbye', icon: '👋', description: 'Open and close your hand with palm facing out' }
+                ],
+                basics: [
+                    { name: 'Yes', icon: '👍', description: 'Nod your hand up and down like a head nodding' },
+                    { name: 'No', icon: '👎', description: 'Move your hand side to side like a head shaking' },
+                    { name: 'Help', icon: '🆘', description: 'Place your right hand on your left palm and lift both' },
+                    { name: 'Water', icon: '💧', description: 'Tap your chin with the W handshape' },
+                    { name: 'Food', icon: '🍕', description: 'Bring your fingers to your mouth repeatedly' }
+                ]
+            },
+            intermediate: {
+                alphabet: [
+                    { name: 'Letter F', icon: 'F', description: 'Touch thumb to index finger, other fingers up' },
+                    { name: 'Letter G', icon: 'G', description: 'Point index finger to the side' },
+                    { name: 'Letter H', icon: 'H', description: 'Point index and middle fingers to the side' },
+                    { name: 'Letter I', icon: 'I', description: 'Pinkie finger up, other fingers curled' },
+                    { name: 'Letter J', icon: 'J', description: 'Pinkie finger traces a J shape' }
+                ],
+                numbers: [
+                    { name: 'Number 6', icon: '6', description: 'Thumb and pinkie extended, other fingers curled' },
+                    { name: 'Number 7', icon: '7', description: 'Thumb touches middle finger, index extended' },
+                    { name: 'Number 8', icon: '8', description: 'Thumb touches ring finger, index extended' },
+                    { name: 'Number 9', icon: '9', description: 'Thumb touches pinkie, index extended' },
+                    { name: 'Number 10', icon: '10', description: 'Thumb up and shake slightly' }
+                ],
+                greetings: [
+                    { name: 'Good Morning', icon: '🌅', description: 'Flat hand moves up from chin to forehead' },
+                    { name: 'Good Night', icon: '🌙', description: 'Flat hand moves down from chin to chest' },
+                    { name: 'How Are You?', icon: '❓', description: 'Palms up, move hands forward and back' },
+                    { name: 'Nice to Meet You', icon: '🤝', description: 'Shake hands as if greeting someone' },
+                    { name: 'See You Later', icon: '👋', description: 'Wave with palm facing body' }
+                ],
+                basics: [
+                    { name: 'My Name Is', icon: '👤', description: 'Point to yourself, then fingerspell name' },
+                    { name: 'What Is Your Name?', icon: '❓', description: 'Palms up, move hands forward and back' },
+                    { name: 'Where', icon: '📍', description: 'Index finger moves in small circles' },
+                    { name: 'When', icon: '🕒', description: 'Index finger touches opposite wrist' },
+                    { name: 'Why', icon: '🤔', description: 'Fingers touch forehead, move forward' }
+                ]
+            },
+            advanced: {
+                alphabet: [
+                    { name: 'Letter K', icon: 'K', description: 'Index and middle fingers up, thumb in between' },
+                    { name: 'Letter L', icon: 'L', description: 'Index finger and thumb form L shape' },
+                    { name: 'Letter M', icon: 'M', description: 'Three fingers tucked under thumb' },
+                    { name: 'Letter N', icon: 'N', description: 'Two fingers tucked under thumb' },
+                    { name: 'Letter O', icon: 'O', description: 'Form an O with all fingers and thumb' }
+                ],
+                numbers: [
+                    { name: 'Number 11', icon: '11', description: 'Index finger shakes side to side' },
+                    { name: 'Number 12', icon: '12', description: 'Index and middle fingers shake side to side' },
+                    { name: 'Number 13', icon: '13', description: 'Three fingers shake side to side' },
+                    { name: 'Number 14', icon: '14', description: 'Four fingers shake side to side' },
+                    { name: 'Number 15', icon: '15', description: 'Five fingers shake side to side' }
+                ],
+                greetings: [
+                    { name: 'Happy Birthday', icon: '🎂', description: 'Pat stomach, then clap hands' },
+                    { name: 'Congratulations', icon: '🎉', description: 'Clap hands in circular motion' },
+                    { name: 'Get Well Soon', icon: '❤️', description: 'Hand on heart, then move forward' },
+                    { name: 'Good Luck', icon: '🍀', description: 'Thumb up, move in circular motion' },
+                    { name: 'Welcome', icon: '🏠', description: 'Flat hands move toward body' }
+                ],
+                basics: [
+                    { name: 'I Love You', icon: '🤟', description: 'Thumb, index, and pinkie extended' },
+                    { name: 'Friend', icon: '👫', description: 'Hook index fingers together' },
+                    { name: 'Family', icon: '👪', description: 'F handshape circles in front of chest' },
+                    { name: 'Home', icon: '🏠', description: 'Flat hand touches cheek, then moves down' },
+                    { name: 'School', icon: '🏫', description: 'Clap hands twice' }
+                ]
+            },
+            expert: {
+                alphabet: [
+                    { name: 'Letter P', icon: 'P', description: 'Index finger down, thumb across middle finger' },
+                    { name: 'Letter Q', icon: 'Q', description: 'Thumb and index finger down, other fingers up' },
+                    { name: 'Letter R', icon: 'R', description: 'Index and middle fingers crossed' },
+                    { name: 'Letter S', icon: 'S', description: 'Fist with thumb across fingers' },
+                    { name: 'Letter T', icon: 'T', description: 'Fist with thumb between index and middle fingers' }
+                ],
+                numbers: [
+                    { name: 'Number 16', icon: '16', description: 'Thumb and pinkie extended, shake side to side' },
+                    { name: 'Number 17', icon: '17', description: 'Thumb touches middle finger, shake side to side' },
+                    { name: 'Number 18', icon: '18', description: 'Thumb touches ring finger, shake side to side' },
+                    { name: 'Number 19', icon: '19', description: 'Thumb touches pinkie, shake side to side' },
+                    { name: 'Number 20', icon: '20', description: 'Make L shape, then close to O shape' }
+                ],
+                greetings: [
+                    { name: 'Happy Holidays', icon: '🎄', description: 'Flat hands move in circular motion' },
+                    { name: 'Season\'s Greetings', icon: '❄️', description: 'S hands move down like snow' },
+                    { name: 'Best Wishes', icon: '🌟', description: 'Flat hands move forward from chest' },
+                    { name: 'Farewell', icon: '👋', description: 'Wave with palm facing away' },
+                    { name: 'Until We Meet Again', icon: '🔁', description: 'Index fingers circle then point forward' }
+                ],
+                basics: [
+                    { name: 'Community', icon: '🏘️', description: 'C hands circle in front of chest' },
+                    { name: 'Communication', icon: '💬', description: 'Index fingers move from mouth to forward' },
+                    { name: 'Understanding', icon: '🧠', description: 'Index finger touches forehead, then moves out' },
+                    { name: 'Knowledge', icon: '📚', description: 'K handshape taps forehead' },
+                    { name: 'Wisdom', icon: '🦉', description: 'W handshape moves from forehead to chin' }
+                ]
+            }
+        };
+        
+        // Gallery data
+        const galleryItems = [
+            { name: 'Hello', icon: '👋', description: 'Wave your hand back and forth', 
+              instructions: 'Extend your hand with palm facing outward and move it from side to side in a waving motion.' },
+            { name: 'Thank You', icon: '🙏', description: 'Move hand forward from chin', 
+              instructions: 'Place your fingertips on your chin, then move your hand forward and downward.' },
+            { name: 'Please', icon: '🤲', description: 'Rub your chest in a circular motion', 
+              instructions: 'Place your open hand on your chest and move it in a circular motion.' },
+            { name: 'Sorry', icon: '😔', description: 'Make a fist and rub it in a circle on your chest', 
+              instructions: 'Make a fist with your right hand and rub it in a circular motion over your heart.' },
+            { name: 'Yes', icon: '👍', description: 'Nod your hand up and down like a head nodding', 
+              instructions: 'Make a fist with your thumb extended upward and move your hand up and down.' },
+            { name: 'No', icon: '👎', description: 'Move your hand side to side like a head shaking', 
+              instructions: 'Extend your index and middle fingers, then move your hand from side to side.' },
+            { name: 'Help', icon: '🆘', description: 'Place your right hand on your left palm and lift both', 
+              instructions: 'Place your right hand on your left palm, then lift both hands upward together.' },
+            { name: 'Water', icon: '💧', description: 'Tap your chin with the W handshape', 
+              instructions: 'Form a W shape with your fingers (thumb and pinky extended, others curled) and tap your chin.' },
+            { name: 'Food', icon: '🍕', description: 'Bring your fingers to your mouth repeatedly', 
+              instructions: 'Bring your fingertips to your lips repeatedly as if eating.' },
+            { name: 'Home', icon: '🏠', description: 'Flat hand touches cheek then moves down', 
+              instructions: 'Touch your cheek with your fingertips, then move your hand downward to your chin.' },
+            { name: 'Family', icon: '👨‍👩‍👧‍👦', description: 'F handshape circles in front of chest', 
+              instructions: 'Form an F handshape (thumb and index finger touching) and circle it in front of your chest.' },
+            { name: 'Friend', icon: '👫', description: 'Hook index fingers together', 
+              instructions: 'Extend both index fingers and hook them together, then pull apart slightly.' },
+            { name: 'Love', icon: '❤️', description: 'Cross hands over chest', 
+              instructions: 'Cross your arms over your chest with hands in fists, as if giving yourself a hug.' },
+            { name: 'Happy', icon: '😊', description: 'Brush chest upward with flat hands', 
+              instructions: 'Place both flat hands on your chest and brush upward with a smiling expression.' },
+            { name: 'Sad', icon: '😢', description: 'Move fingers downward in front of face', 
+              instructions: 'Move your fingers downward in front of your face with a sad expression.' },
+            { name: 'Angry', icon: '😠', description: 'Claw hands clawing toward body', 
+              instructions: 'Form claw shapes with both hands and pull them toward your body with an angry expression.' },
+            { name: 'Tired', icon: '😴', description: 'Fingers spread moving down face', 
+              instructions: 'Spread your fingers and move them downward over your face as if wiping away sleep.' },
+            { name: 'School', icon: '🏫', description: 'Clap hands twice', 
+              instructions: 'Clap your hands together twice, mimicking the sound of a school bell.' },
+            { name: 'Work', icon: '💼', description: 'Tap wrist with S handshape', 
+              instructions: 'Form an S handshape (fist) and tap it on the opposite wrist.' },
+            { name: 'Play', icon: '🎮', description: 'Y handshapes shaking back and forth', 
+              instructions: 'Form Y handshapes (thumb and pinky extended) and shake them back and forth.' },
+            { name: 'Sleep', icon: '💤', description: 'Place hand beside tilted head', 
+              instructions: 'Place your hand beside your tilted head as if sleeping.' },
+            { name: 'Eat', icon: '🍽️', description: 'Bring flat hand to mouth', 
+              instructions: 'Bring your flat hand to your mouth as if eating.' },
+            { name: 'Drink', icon: '🥤', description: 'C handshape to mouth', 
+              instructions: 'Form a C handshape and bring it to your mouth as if drinking.' },
+            { name: 'More', icon: '➕', description: 'Fingertips tapping together', 
+              instructions: 'Bring your fingertips together repeatedly.' }
+        ];
+        
+        // Memory game data
+        const memoryPairs = [
+            { sign: '👋', word: 'Hello' },
+            { sign: '🙏', word: 'Thank You' },
+            { sign: '🤲', word: 'Please' },
+            { sign: '😔', word: 'Sorry' },
+            { sign: '👍', word: 'Yes' },
+            { sign: '👎', word: 'No' },
+            { sign: '🆘', word: 'Help' },
+            { sign: '💧', word: 'Water' }
+        ];
+        
+        // Quiz questions
+        const quizData = [
+            {
+                question: 'What does this sign mean? 👋',
+                options: ['Hello', 'Goodbye', 'Thank you', 'Please'],
+                correct: 0
+            },
+            {
+                question: 'How do you sign "Thank you"?',
+                options: ['Wave hand', 'Tap chin', 'Move hand from chin', 'Rub chest'],
+                correct: 2
+            },
+            {
+                question: 'Which sign means "Yes"?',
+                options: ['👎', '🤲', '👍', '👋'],
+                correct: 2
+            },
+            {
+                question: 'What is the sign for "Water"?',
+                options: ['Tap chin with W', 'Wave hand', 'Rub chest', 'Clap hands'],
+                correct: 0
+            },
+            {
+                question: 'How do you sign "Please"?',
+                options: ['Wave hand', 'Move hand from chin', 'Rub chest', 'Tap chin'],
+                correct: 2
+            },
+            {
+                question: 'What does this sign mean? 🤲',
+                options: ['Hello', 'Thank you', 'Please', 'Yes'],
+                correct: 2
+            },
+            {
+                question: 'Which sign means "No"?',
+                options: ['👍', '👎', '👋', '🤲'],
+                correct: 1
+            },
+            {
+                question: 'How do you sign "Help"?',
+                options: ['Wave hand', 'Place hand on palm and lift', 'Tap chin', 'Rub chest'],
+                correct: 1
+            }
+        ];
+        
+        // Spelling words
+        const spellingData = [
+            'HELLO', 'THANK', 'PLEASE', 'SORRY', 'WATER', 'FOOD', 'HOME', 'FAMILY', 'FRIEND', 'LOVE'
+        ];
+        
+        // SmartBot responses
+        const smartBotResponses = {
+            greeting: [
+                "Hello! I'm SmartBot, your AI learning assistant. How can I help you today?",
+                "Hi there! I'm here to help you learn sign language. What can I assist you with?",
+                "Welcome to SignSmart! I'm SmartBot, ready to help you on your sign language journey."
+            ],
+            help: [
+                "I can help you learn sign language, answer questions about lessons, or guide you through the app.",
+                "You can ask me about different signs, learning techniques, or how to use SignSmart effectively.",
+                "I'm here to assist with your learning. Try asking about a specific sign or lesson!"
+            ],
+            lessons: [
+                "We have lessons for all levels: Beginner, Intermediate, Advanced, and Expert. Which one interests you?",
+                "Our lessons cover alphabet, numbers, greetings, and basic signs. What would you like to practice today?",
+                "You can choose from alphabet, numbers, greetings, or basics in the lesson selector. Which one would you like to try?"
+            ],
+            feedback: [
+                "The AI feedback system analyzes your hand positions and gives you tips to improve your signs.",
+                "Our AI provides real-time feedback on your sign accuracy. Keep practicing to see your progress!",
+                "The feedback system helps you perfect your signs by comparing them to correct hand positions."
+            ],
+            default: [
+                "I'm not sure I understand. Can you try asking in a different way?",
+                "I'm still learning! Could you rephrase your question?",
+                "I don't have an answer for that yet. Try asking about sign language lessons or features."
+            ]
+        };
+        
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            init();
+        });
+        
+        async function init() {
+            // Create particles for splash screen
+            createSplashParticles();
+            
+            // Show splash screen for minimum time
+            setTimeout(() => {
+                document.getElementById('splash-screen').style.animation = 'fadeOut 0.5s ease forwards';
+            }, 2500);
+            
+            video = document.getElementById('webcam');
+            canvas = document.getElementById('output-canvas');
+            ctx = canvas.getContext('2d');
+            
+            // Set canvas dimensions
+            canvas.width = 640;
+            canvas.height = 480;
+            
+            // Initialize hand detector
+            try {
+                detector = await createDetector();
+                updateStatus('Ready to start learning', 'inactive');
+            } catch (error) {
+                console.error('Error initializing detector:', error);
+                updateStatus('Error initializing detector. Please refresh the page.', 'inactive');
+                return;
+            }
+            
+            // Set up event listeners
+            document.getElementById('start-btn').addEventListener('click', toggleLearning);
+            document.getElementById('reset-btn').addEventListener('click', resetProgress);
+            
+            // Lesson selector buttons
+            document.querySelectorAll('.lesson-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.lesson-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentLesson = btn.dataset.lesson;
+                    currentSignIndex = 0;
+                    updateCurrentSign();
+                    
+                    // Update navigation indicator
+                    updateNavIndicator();
+                });
+            });
+            
+            // Level selector buttons
+            document.querySelectorAll('.level-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.querySelectorAll('.level-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    currentLevel = btn.dataset.level;
+                    currentSignIndex = 0;
+                    updateLevelDescription();
+                    updateCurrentSign();
+                });
+            });
+            
+            // Authentication event listeners
+            document.getElementById('signin-header-btn').addEventListener('click', showSignIn);
+            document.getElementById('signup-header-btn').addEventListener('click', showSignUp);
+            document.getElementById('close-signin').addEventListener('click', hideSignIn);
+            document.getElementById('close-signup').addEventListener('click', hideSignUp);
+            document.getElementById('show-signup').addEventListener('click', (e) => {
+                e.preventDefault();
+                hideSignIn();
+                showSignUp();
+            });
+            document.getElementById('show-signin').addEventListener('click', (e) => {
+                e.preventDefault();
+                hideSignUp();
+                showSignIn();
+            });
+            document.getElementById('signout-btn').addEventListener('click', signOut);
+            
+            // Form submissions
+            document.getElementById('signin-form').addEventListener('submit', handleSignIn);
+            document.getElementById('signup-form').addEventListener('submit', handleSignUp);
+            
+            // SmartBot event listeners
+            document.getElementById('smartbot-toggle').addEventListener('click', toggleSmartBot);
+            document.getElementById('smartbot-send').addEventListener('click', sendSmartBotMessage);
+            document.getElementById('smartbot-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    sendSmartBotMessage();
+                }
+            });
+            
+            // Responsive navigation
+            document.getElementById('hamburger').addEventListener('click', toggleNav);
+            
+            // Navigation event listeners
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const page = link.getAttribute('data-page');
+                    showPage(page);
+                    
+                    // Update navigation indicator
+                    updateNavIndicator();
+                    
+                    // Close mobile menu if open
+                    document.getElementById('nav-links').classList.remove('active');
+                });
+            });
+            
+            // Home page feature card event listeners
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const feature = card.getAttribute('data-feature');
+                    toggleFeatureContent(feature);
+                });
+            });
+            
+            // Feature content button event listeners
+            document.getElementById('go-to-lessons').addEventListener('click', () => showPage('lessons'));
+            document.getElementById('go-to-games').addEventListener('click', () => showPage('games'));
+            document.getElementById('try-smartbot').addEventListener('click', () => {
+                toggleSmartBot();
+                toggleFeatureContent(null);
+            });
+            
+            // Game event listeners
+            document.querySelectorAll('.play-game').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    const game = e.target.closest('.game-card').getAttribute('data-game');
+                    startGame(game);
+                });
+            });
+            
+            document.getElementById('back-to-games').addEventListener('click', () => showGame(null));
+            document.getElementById('back-to-games-2').addEventListener('click', () => showGame(null));
+            document.getElementById('back-to-games-3').addEventListener('click', () => showGame(null));
+            
+            document.getElementById('reset-memory').addEventListener('click', initMemoryGame);
+            document.getElementById('next-quiz').addEventListener('click', nextQuizQuestion);
+            document.getElementById('next-spelling').addEventListener('click', nextSpellingWord);
+            
+            // 3D sign viewer event listeners
+            document.getElementById('close-viewer').addEventListener('click', closeSignViewer);
+            document.getElementById('rotate-left').addEventListener('click', () => rotateHand(-30));
+            document.getElementById('rotate-right').addEventListener('click', () => rotateHand(30));
+            document.getElementById('reset-view').addEventListener('click', resetHandView);
+            
+            // App download button event listeners
+            document.getElementById('google-play-btn').addEventListener('click', handleAppDownload);
+            document.getElementById('app-store-btn').addEventListener('click', handleAppDownload);
+            document.getElementById('footer-google-play-btn').addEventListener('click', handleAppDownload);
+            document.getElementById('footer-app-store-btn').addEventListener('click', handleAppDownload);
+            
+            // Social media icon event listeners
+            document.getElementById('facebook-icon').addEventListener('click', handleSocialMediaClick);
+            document.getElementById('twitter-icon').addEventListener('click', handleSocialMediaClick);
+            document.getElementById('instagram-icon').addEventListener('click', handleSocialMediaClick);
+            document.getElementById('linkedin-icon').addEventListener('click', handleSocialMediaClick);
+            document.getElementById('youtube-icon').addEventListener('click', handleSocialMediaClick);
+            
+            // Initialize the current sign display
+            updateCurrentSign();
+            updateLevelDescription();
+            
+            // Initialize gallery
+            initGallery();
+            
+            // Check if user is already signed in
+            checkAuthStatus();
+            
+            // Show home page by default
+            showPage('home');
+            
+            // Add navigation indicator
+            addNavIndicator();
+        }
+        
+        // Handle app download button clicks
+        function handleAppDownload(e) {
+            e.preventDefault();
+            const button = e.currentTarget;
+            
+            // Add click feedback
+            button.style.transform = 'translateY(-1px)';
+            button.style.boxShadow = '0 3px 6px rgba(0, 0, 0, 0.2)';
+            
+            // Show notification
+            const isGooglePlay = button.id.includes('google');
+            showNotification(`${isGooglePlay ? 'Google Play' : 'App Store'} download link would open here!`, 'success');
+            
+            // Reset button style after animation
+            setTimeout(() => {
+                button.style.transform = '';
+                button.style.boxShadow = '';
+            }, 300);
+        }
+        
+        // Handle social media icon clicks
+        function handleSocialMediaClick(e) {
+            e.preventDefault();
+            const icon = e.currentTarget;
+            
+            // Add click feedback
+            icon.style.transform = 'translateY(-1px)';
+            
+            // Show notification
+            const platform = icon.id.replace('-icon', '');
+            showNotification(`${platform.charAt(0).toUpperCase() + platform.slice(1)} link would open here!`, 'success');
+            
+            // Reset icon style after animation
+            setTimeout(() => {
+                icon.style.transform = '';
+            }, 300);
+        }
+        
+        // Create particles for splash screen
+        function createSplashParticles() {
+            const particlesContainer = document.getElementById('splash-particles');
+            const particleCount = 20;
+            
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random position and size
+                const size = Math.random() * 10 + 5;
+                particle.style.width = `${size}px`;
+                particle.style.height = `${size}px`;
+                particle.style.left = `${Math.random() * 100}%`;
+                particle.style.animationDelay = `${Math.random() * 15}s`;
+                
+                // Random color from theme
+                const colors = [
+                    'var(--signsmart-blue)',
+                    'var(--signsmart-green)',
+                    'var(--signsmart-purple)',
+                    'var(--signsmart-orange)',
+                    'var(--signsmart-yellow)',
+                    'var(--signsmart-red)'
+                ];
+                particle.style.background = colors[Math.floor(Math.random() * colors.length)];
+                
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Page navigation
+        function showPage(pageName) {
+            // Hide all pages
+            document.querySelectorAll('.page-content').forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            document.getElementById(`${pageName}-page`).classList.add('active');
+            
+            // Update active nav link
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('data-page') === pageName) {
+                    link.classList.add('active');
+                }
+            });
+            
+            // If leaving lessons page, stop the webcam
+            if (pageName !== 'lessons' && isRunning) {
+                stopWebcam();
+                isRunning = false;
+                document.getElementById('start-btn').textContent = 'Start Learning';
+                updateStatus('Learning stopped', 'inactive');
+                clearInterval(sessionTimer);
+            }
+            
+            // Hide any open feature content on home page
+            if (pageName !== 'home') {
+                toggleFeatureContent(null);
+            }
+            
+            // Hide any open games
+            if (pageName !== 'games') {
+                showGame(null);
+            }
+        }
+        
+        // Toggle feature content on home page
+        function toggleFeatureContent(feature) {
+            // Hide all feature content
+            document.querySelectorAll('.feature-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Reset all feature cards
+            document.querySelectorAll('.feature-card').forEach(card => {
+                card.style.borderColor = 'var(--signsmart-purple)';
+            });
+            
+            // If clicking the same feature again, close it
+            if (activeFeature === feature) {
+                activeFeature = null;
+                return;
+            }
+            
+            // Show selected feature content
+            if (feature) {
+                const contentElement = document.getElementById(`${feature}-content`);
+                if (contentElement) {
+                    contentElement.classList.add('active');
+                    
+                    // Highlight the selected feature card
+                    document.querySelector(`.feature-card[data-feature="${feature}"]`).style.borderColor = 'var(--signsmart-green)';
+                    
+                    activeFeature = feature;
+                    
+                    // Scroll to the feature content
+                    contentElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }
+        
+        // Add navigation indicator element
+        function addNavIndicator() {
+            const navLinks = document.querySelectorAll('.nav-links li');
+            navLinks.forEach(link => {
+                const indicator = document.createElement('div');
+                indicator.className = 'nav-indicator';
+                link.appendChild(indicator);
+            });
+            
+            // Initialize the indicator position
+            updateNavIndicator();
+        }
+        
+        // Update navigation indicator position
+        function updateNavIndicator() {
+            const activeLink = document.querySelector('.nav-links a.active');
+            if (activeLink) {
+                const parentLi = activeLink.parentElement;
+                const indicator = parentLi.querySelector('.nav-indicator');
+                if (indicator) {
+                    indicator.style.width = '100%';
+                }
+                
+                // Reset other indicators
+                document.querySelectorAll('.nav-links li').forEach(li => {
+                    if (li !== parentLi) {
+                        const otherIndicator = li.querySelector('.nav-indicator');
+                        if (otherIndicator) {
+                            otherIndicator.style.width = '0';
+                        }
+                    }
+                });
+            }
+        }
+        
+        // Initialize gallery
+        function initGallery() {
+            const galleryGrid = document.getElementById('gallery-grid');
+            galleryGrid.innerHTML = '';
+            
+            galleryItems.forEach((item, index) => {
+                const galleryItem = document.createElement('div');
+                galleryItem.className = 'gallery-item';
+                galleryItem.setAttribute('data-index', index);
+                
+                galleryItem.innerHTML = `
+                    <div class="gallery-image">
+                        ${item.icon}
+                    </div>
+                    <div class="gallery-caption">
+                        <h3>${item.name}</h3>
+                        <p>${item.description}</p>
+                    </div>
+                `;
+                
+                galleryItem.addEventListener('click', () => {
+                    openSignViewer(index);
+                });
+                
+                galleryGrid.appendChild(galleryItem);
+            });
+        }
+        
+        // Open 3D sign viewer
+        function openSignViewer(index) {
+            const item = galleryItems[index];
+            document.getElementById('viewer-title').textContent = item.name;
+            document.getElementById('sign-instructions').textContent = item.instructions;
+            
+            // Set up hand for this sign (simplified for demo)
+            setupHandForSign(item.name);
+            
+            document.getElementById('sign-viewer').classList.add('active');
+        }
+        
+        // Close 3D sign viewer
+        function closeSignViewer() {
+            document.getElementById('sign-viewer').classList.remove('active');
+        }
+        
+        // Setup hand for specific sign (simplified for demo)
+        function setupHandForSign(signName) {
+            const hand = document.getElementById('sign-hand');
+            
+            // Reset hand position
+            resetHandView();
+            
+            // Simple transformations based on sign name
+            // In a real app, this would be more complex 3D modeling
+            switch(signName) {
+                case 'Hello':
+                    // Wave hand - simple side-to-side animation
+                    break;
+                case 'Thank You':
+                    // Move hand forward from chin
+                    break;
+                case 'Please':
+                    // Circular motion on chest
+                    break;
+                case 'Sorry':
+                    // Fist rubbing chest
+                    break;
+                // Add more cases for other signs
+                default:
+                    // Default hand position
+                    break;
+            }
+        }
+        
+        // Rotate hand in 3D viewer
+        function rotateHand(degrees) {
+            currentRotation += degrees;
+            const hand = document.getElementById('sign-hand');
+            hand.style.transform = `rotateY(${currentRotation}deg)`;
+        }
+        
+        // Reset hand view
+        function resetHandView() {
+            currentRotation = 0;
+            const hand = document.getElementById('sign-hand');
+            hand.style.transform = `rotateY(0deg)`;
+        }
+        
+        // Start a game
+        function startGame(game) {
+            currentGame = game;
+            showGame(game);
+            
+            switch(game) {
+                case 'memory':
+                    initMemoryGame();
+                    break;
+                case 'quiz':
+                    initQuizGame();
+                    break;
+                case 'spelling':
+                    initSpellingGame();
+                    break;
+            }
+        }
+        
+        // Show/hide game container
+        function showGame(game) {
+            // Hide all game containers
+            document.querySelectorAll('.game-container').forEach(container => {
+                container.classList.remove('active');
+            });
+            
+            // Show selected game container
+            if (game) {
+                document.getElementById(`${game}-game`).classList.add('active');
+            }
+        }
+        
+        // Initialize memory game
+        function initMemoryGame() {
+            const memoryBoard = document.getElementById('memory-board');
+            memoryBoard.innerHTML = '';
+            
+            // Reset game state
+            memoryCards = [];
+            flippedCards = [];
+            matchedPairs = 0;
+            memoryScore = 0;
+            document.getElementById('memory-score').textContent = memoryScore;
+            
+            // Create card pairs
+            let cards = [];
+            memoryPairs.forEach(pair => {
+                cards.push({ type: 'sign', content: pair.sign, pairId: pair.word });
+                cards.push({ type: 'word', content: pair.word, pairId: pair.word });
+            });
+            
+            // Shuffle cards
+            cards = shuffleArray(cards);
+            
+            // Create card elements
+            cards.forEach((card, index) => {
+                const cardElement = document.createElement('div');
+                cardElement.className = 'memory-card';
+                cardElement.setAttribute('data-index', index);
+                
+                cardElement.innerHTML = `
+                    <div class="front">?</div>
+                    <div class="back">${card.content}</div>
+                `;
+                
+                cardElement.addEventListener('click', () => flipMemoryCard(cardElement, card));
+                
+                memoryBoard.appendChild(cardElement);
+                memoryCards.push({ element: cardElement, ...card, flipped: false, matched: false });
+            });
+        }
+        
+        // Flip memory card
+        function flipMemoryCard(cardElement, card) {
+            const cardIndex = parseInt(cardElement.getAttribute('data-index'));
+            const cardData = memoryCards[cardIndex];
+            
+            // If card is already flipped or matched, do nothing
+            if (cardData.flipped || cardData.matched) return;
+            
+            // If two cards are already flipped, do nothing
+            if (flippedCards.length >= 2) return;
+            
+            // Flip the card
+            cardElement.classList.add('flipped');
+            cardData.flipped = true;
+            flippedCards.push(cardData);
+            
+            // Check for match if two cards are flipped
+            if (flippedCards.length === 2) {
+                setTimeout(checkMemoryMatch, 1000);
+            }
+        }
+        
+        // Check if flipped memory cards match
+        function checkMemoryMatch() {
+            if (flippedCards.length !== 2) return;
+            
+            const card1 = flippedCards[0];
+            const card2 = flippedCards[1];
+            
+            if (card1.pairId === card2.pairId && card1.type !== card2.type) {
+                // Match found
+                card1.matched = true;
+                card2.matched = true;
+                matchedPairs++;
+                memoryScore += 10;
+                document.getElementById('memory-score').textContent = memoryScore;
+                
+                // Check if game is complete
+                if (matchedPairs === memoryPairs.length) {
+                    setTimeout(() => {
+                        showNotification('Congratulations! You matched all pairs! 🎉');
+                    }, 500);
+                }
+            } else {
+                // No match - flip cards back
+                card1.element.classList.remove('flipped');
+                card2.element.classList.remove('flipped');
+                card1.flipped = false;
+                card2.flipped = false;
+            }
+            
+            // Clear flipped cards
+            flippedCards = [];
+        }
+        
+        // Initialize quiz game
+        function initQuizGame() {
+            quizQuestions = [...quizData];
+            currentQuestionIndex = 0;
+            quizScore = 0;
+            document.getElementById('quiz-score').textContent = quizScore;
+            document.getElementById('quiz-total').textContent = quizQuestions.length;
+            
+            showQuizQuestion();
+        }
+        
+        // Show current quiz question
+        function showQuizQuestion() {
+            if (currentQuestionIndex >= quizQuestions.length) {
+                // Quiz complete
+                document.getElementById('quiz-question').textContent = 'Quiz Complete!';
+                document.getElementById('quiz-options').innerHTML = '';
+                document.getElementById('quiz-feedback').textContent = `Your score: ${quizScore}/${quizQuestions.length}`;
+                document.getElementById('quiz-feedback').className = 'quiz-feedback feedback-good';
+                return;
+            }
+            
+            const question = quizQuestions[currentQuestionIndex];
+            document.getElementById('quiz-question').textContent = question.question;
+            
+            const optionsContainer = document.getElementById('quiz-options');
+            optionsContainer.innerHTML = '';
+            
+            question.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = option;
+                optionElement.setAttribute('data-index', index);
+                
+                optionElement.addEventListener('click', () => selectQuizOption(optionElement, index));
+                
+                optionsContainer.appendChild(optionElement);
+            });
+            
+            document.getElementById('quiz-feedback').textContent = '';
+            document.getElementById('quiz-feedback').className = 'quiz-feedback';
+        }
+        
+        // Select quiz option
+        function selectQuizOption(optionElement, selectedIndex) {
+            const question = quizQuestions[currentQuestionIndex];
+            const options = document.querySelectorAll('.quiz-option');
+            
+            // Disable all options
+            options.forEach(opt => {
+                opt.style.pointerEvents = 'none';
+            });
+            
+            // Highlight correct and incorrect answers
+            options.forEach((opt, index) => {
+                if (index === question.correct) {
+                    opt.classList.add('correct');
+                } else if (index === selectedIndex) {
+                    opt.classList.add('incorrect');
+                }
+            });
+            
+            // Check if answer is correct
+            if (selectedIndex === question.correct) {
+                quizScore++;
+                document.getElementById('quiz-score').textContent = quizScore;
+                document.getElementById('quiz-feedback').textContent = 'Correct! 🎉';
+                document.getElementById('quiz-feedback').className = 'quiz-feedback feedback-good';
+            } else {
+                document.getElementById('quiz-feedback').textContent = `Incorrect. The correct answer is: ${question.options[question.correct]}`;
+                document.getElementById('quiz-feedback').className = 'quiz-feedback feedback-poor';
+            }
+        }
+        
+        // Go to next quiz question
+        function nextQuizQuestion() {
+            currentQuestionIndex++;
+            showQuizQuestion();
+        }
+        
+        // Initialize spelling game
+        function initSpellingGame() {
+            spellingWords = [...spellingData];
+            spellingScore = 0;
+            document.getElementById('spelling-score').textContent = spellingScore;
+            
+            nextSpellingWord();
+        }
+        
+        // Show next spelling word
+        function nextSpellingWord() {
+            if (spellingWords.length === 0) {
+                // Game complete
+                document.getElementById('spelling-word').textContent = 'Game Complete!';
+                document.getElementById('spelling-input').innerHTML = '';
+                document.getElementById('spelling-options').innerHTML = '';
+                document.getElementById('spelling-feedback').textContent = `Your score: ${spellingScore}`;
+                document.getElementById('spelling-feedback').className = 'quiz-feedback feedback-good';
+                return;
+            }
+            
+            // Get random word
+            const randomIndex = Math.floor(Math.random() * spellingWords.length);
+            currentSpellingWord = spellingWords[randomIndex];
+            spellingWords.splice(randomIndex, 1);
+            
+            document.getElementById('spelling-word').textContent = currentSpellingWord;
+            
+            // Clear input
+            const spellingInput = document.getElementById('spelling-input');
+            spellingInput.innerHTML = '';
+            
+            // Create input slots
+            for (let i = 0; i < currentSpellingWord.length; i++) {
+                const slot = document.createElement('div');
+                slot.className = 'spelling-letter';
+                slot.setAttribute('data-index', i);
+                spellingInput.appendChild(slot);
+            }
+            
+            // Create letter options
+            const spellingOptions = document.getElementById('spelling-options');
+            spellingOptions.innerHTML = '';
+            
+            const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+            shuffleArray(letters).forEach(letter => {
+                const option = document.createElement('div');
+                option.className = 'spelling-option';
+                option.textContent = letter;
+                
+                option.addEventListener('click', () => selectSpellingLetter(option, letter));
+                
+                spellingOptions.appendChild(option);
+            });
+            
+            document.getElementById('spelling-feedback').textContent = '';
+            document.getElementById('spelling-feedback').className = 'quiz-feedback';
+        }
+        
+        // Select letter in spelling game
+        function selectSpellingLetter(optionElement, letter) {
+            const slots = document.querySelectorAll('.spelling-letter');
+            let emptySlot = null;
+            
+            // Find first empty slot
+            for (let i = 0; i < slots.length; i++) {
+                if (!slots[i].textContent) {
+                    emptySlot = slots[i];
+                    break;
+                }
+            }
+            
+            // If no empty slot, do nothing
+            if (!emptySlot) return;
+            
+            // Add letter to slot
+            emptySlot.textContent = letter;
+            optionElement.style.visibility = 'hidden';
+            
+            // Check if word is complete
+            const currentSpelling = Array.from(slots).map(slot => slot.textContent).join('');
+            if (currentSpelling.length === currentSpellingWord.length) {
+                checkSpellingWord(currentSpelling);
+            }
+        }
+        
+        // Check spelling word
+        function checkSpellingWord(word) {
+            if (word === currentSpellingWord) {
+                spellingScore += 10;
+                document.getElementById('spelling-score').textContent = spellingScore;
+                document.getElementById('spelling-feedback').textContent = 'Correct! 🎉';
+                document.getElementById('spelling-feedback').className = 'quiz-feedback feedback-good';
+            } else {
+                document.getElementById('spelling-feedback').textContent = 'Incorrect. Try again!';
+                document.getElementById('spelling-feedback').className = 'quiz-feedback feedback-poor';
+                
+                // Clear input
+                const slots = document.querySelectorAll('.spelling-letter');
+                slots.forEach(slot => {
+                    slot.textContent = '';
+                });
+                
+                // Show all options again
+                const options = document.querySelectorAll('.spelling-option');
+                options.forEach(option => {
+                    option.style.visibility = 'visible';
+                });
+            }
+        }
+        
+        // Utility function to shuffle array
+        function shuffleArray(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        // Create hand pose detector
+        async function createDetector() {
+            // Return a mock detector for demo purposes
+            return {
+                async estimateHands() {
+                    // In a real implementation, this would return actual hand landmarks
+                    // For demo, we return mock data
+                    return [];
+                }
+            };
+        }
+        
+        // Start webcam
+        async function startWebcam() {
+            try {
+                videoStream = await navigator.mediaDevices.getUserMedia({ 
+                    video: { width: 640, height: 480 } 
+                });
+                video.srcObject = videoStream;
+                
+                // Show video and canvas, hide placeholder
+                document.querySelector('.video-placeholder').style.display = 'none';
+                video.style.display = 'block';
+                canvas.style.display = 'block';
+                
+                return true;
+            } catch (error) {
+                console.error('Error accessing camera:', error);
+                updateStatus('Error accessing camera. Please check permissions.', 'inactive');
+                return false;
+            }
+        }
+        
+        // Stop webcam
+        function stopWebcam() {
+            if (videoStream) {
+                videoStream.getTracks().forEach(track => track.stop());
+                videoStream = null;
+            }
+            
+            // Hide video and canvas, show placeholder
+            video.style.display = 'none';
+            canvas.style.display = 'none';
+            document.querySelector('.video-placeholder').style.display = 'flex';
+        }
+        
+        // Toggle learning mode
+        async function toggleLearning() {
+            const startBtn = document.getElementById('start-btn');
+            
+            if (!isRunning) {
+                // Start learning
+                const webcamStarted = await startWebcam();
+                if (!webcamStarted) return;
+                
+                isRunning = true;
+                startBtn.textContent = 'Stop Learning';
+                updateStatus('AI is analyzing your hand signs...', 'active');
+                sessionStartTime = new Date();
+                startSessionTimer();
+                runDetection();
+            } else {
+                // Stop learning
+                isRunning = false;
+                startBtn.textContent = 'Start Learning';
+                updateStatus('Learning paused', 'inactive');
+                clearInterval(sessionTimer);
+                stopWebcam();
+            }
+        }
+        
+        // Run hand detection
+        async function runDetection() {
+            if (!isRunning) return;
+            
+            try {
+                // In a real implementation, we would use the detector here
+                // const hands = await detector.estimateHands(video);
+                
+                // For demo purposes, we'll simulate detection and feedback
+                simulateDetection();
+                
+                // Continue the detection loop
+                requestAnimationFrame(runDetection);
+            } catch (error) {
+                console.error('Error in detection:', error);
+                updateStatus('Detection error - Please try again', 'inactive');
+                isRunning = false;
+                document.getElementById('start-btn').textContent = 'Start Learning';
+                stopWebcam();
+            }
+        }
+        
+        // Enhanced hand detection simulation
+        function simulateDetection() {
+            // Clear canvas
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw a more detailed mock hand for demonstration
+            drawEnhancedMockHand();
+            
+            // Simulate random accuracy for demo with more realistic progression
+            let accuracy;
+            if (Math.random() > 0.7) {
+                // Simulate improvement over time
+                const baseAccuracy = 30 + (correctAttempts * 5);
+                accuracy = Math.min(baseAccuracy + Math.random() * 40, 95);
+            } else {
+                accuracy = 20 + Math.random() * 50;
+            }
+            
+            updateFeedback(accuracy);
+            
+            // "Detect" the correct sign with probability based on accuracy
+            if (accuracy > 75 && Math.random() > 0.5) {
+                correctAttempts++;
+                totalAttempts++;
+                
+                // Update stats
+                updateStats();
+                
+                // Show success feedback
+                showSuccessAnimation();
+                
+                // Move to next sign after a successful attempt
+                setTimeout(() => {
+                    currentSignIndex = (currentSignIndex + 1) % lessons[currentLevel][currentLesson].length;
+                    if (currentSignIndex === 0) {
+                        signsLearned++;
+                        // Show level completion message
+                        showCompletionMessage();
+                    }
+                    updateCurrentSign();
+                }, 1500);
+            } else {
+                totalAttempts++;
+                updateStats();
+            }
+        }
+        
+        // Draw a more detailed mock hand
+        function drawEnhancedMockHand() {
+            const centerX = canvas.width / 2;
+            const centerY = canvas.height / 2;
+            
+            // Draw palm with gradient
+            const gradient = ctx.createRadialGradient(centerX, centerY, 0, centerX, centerY, 50);
+            gradient.addColorStop(0, 'rgba(78, 205, 196, 0.8)');
+            gradient.addColorStop(1, 'rgba(78, 205, 196, 0.4)');
+            
+            ctx.fillStyle = gradient;
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 50, 0, Math.PI * 2);
+            ctx.fill();
+            
+            // Draw hand outline
+            ctx.strokeStyle = '#4ECDC4';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Draw fingers with more detail
+            const fingerPositions = [
+                { x: centerX - 25, y: centerY - 60, length: 40 }, // thumb
+                { x: centerX - 10, y: centerY - 80, length: 50 }, // index
+                { x: centerX, y: centerY - 85, length: 55 },      // middle
+                { x: centerX + 10, y: centerY - 80, length: 50 }, // ring
+                { x: centerX + 25, y: centerY - 60, length: 40 }  // pinky
+            ];
+            
+            ctx.strokeStyle = '#4ECDC4';
+            ctx.lineWidth = 4;
+            
+            fingerPositions.forEach((pos, index) => {
+                // Draw finger segments
+                const segments = 3;
+                const segmentLength = pos.length / segments;
+                
+                let prevX = centerX;
+                let prevY = centerY;
+                
+                for (let i = 0; i < segments; i++) {
+                    const segmentRatio = (i + 1) / segments;
+                    const segmentX = centerX + (pos.x - centerX) * segmentRatio;
+                    const segmentY = centerY + (pos.y - centerY) * segmentRatio;
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(prevX, prevY);
+                    ctx.lineTo(segmentX, segmentY);
+                    ctx.stroke();
+                    
+                    prevX = segmentX;
+                    prevY = segmentY;
+                }
+                
+                // Draw finger tips
+                ctx.fillStyle = '#4ECDC4';
+                ctx.beginPath();
+                ctx.arc(pos.x, pos.y, 6, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            // Draw wrist
+            ctx.beginPath();
+            ctx.moveTo(centerX - 30, centerY + 40);
+            ctx.lineTo(centerX + 30, centerY + 40);
+            ctx.stroke();
+        }
+        
+        // Show success animation
+        function showSuccessAnimation() {
+            const targetSign = document.querySelector('.target-sign');
+            targetSign.style.animation = 'pulse 0.5s ease';
+            
+            setTimeout(() => {
+                targetSign.style.animation = '';
+            }, 500);
+        }
+        
+        // Show level completion message
+        function showCompletionMessage() {
+            const feedbackElement = document.getElementById('feedback-message');
+            const originalContent = feedbackElement.innerHTML;
+            
+            feedbackElement.className = 'feedback-message feedback-good';
+            feedbackElement.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="font-size: 2rem; margin-bottom: 10px;">🎉</div>
+                    <strong>Level Complete!</strong><br>
+                    You've mastered all signs in this lesson!
+                </div>
+            `;
+            
+            setTimeout(() => {
+                feedbackElement.innerHTML = originalContent;
+            }, 3000);
+        }
+        
+        // Update feedback based on accuracy
+        function updateFeedback(accuracy) {
+            const feedbackElement = document.getElementById('feedback-message');
+            const accuracyElement = document.getElementById('accuracy-value');
+            const progressElement = document.getElementById('accuracy-progress');
+            
+            accuracyElement.textContent = `${Math.round(accuracy)}%`;
+            progressElement.style.width = `${accuracy}%`;
+            
+            if (accuracy > 80) {
+                feedbackElement.className = 'feedback-message feedback-good';
+                feedbackElement.textContent = 'Excellent! Your hand position is correct.';
+            } else if (accuracy > 50) {
+                feedbackElement.className = 'feedback-message feedback-average';
+                feedbackElement.textContent = 'Good attempt. Try adjusting your finger position for better accuracy.';
+            } else {
+                feedbackElement.className = 'feedback-message feedback-poor';
+                feedbackElement.textContent = 'Keep practicing. Focus on the hand shape and finger positions.';
+            }
+        }
+        
+        // Update current sign display
+        function updateCurrentSign() {
+            const currentSign = lessons[currentLevel][currentLesson][currentSignIndex];
+            
+            document.getElementById('target-sign-icon').textContent = currentSign.icon;
+            document.getElementById('target-sign-name').textContent = currentSign.name;
+            document.getElementById('target-sign-desc').textContent = currentSign.description;
+            
+            // Update progress
+            const progress = (currentSignIndex / (lessons[currentLevel][currentLesson].length - 1)) * 100;
+            document.getElementById('lesson-progress').style.width = `${progress}%`;
+            document.getElementById('progress-percent').textContent = `${Math.round(progress)}%`;
+        }
+        
+        // Update level description
+        function updateLevelDescription() {
+            document.getElementById('level-description').innerHTML = 
+                `<p><strong>${currentLevel.charAt(0).toUpperCase() + currentLevel.slice(1)} Level:</strong> ${levelDescriptions[currentLevel]}</p>`;
+        }
+        
+        // Update statistics
+        function updateStats() {
+            document.getElementById('signs-learned').textContent = signsLearned;
+            
+            const accuracyRate = totalAttempts > 0 ? Math.round((correctAttempts / totalAttempts) * 100) : 0;
+            document.getElementById('accuracy-rate').textContent = `${accuracyRate}%`;
+        }
+        
+        // Start session timer
+        function startSessionTimer() {
+            sessionTimer = setInterval(() => {
+                const now = new Date();
+                const diff = Math.floor((now - sessionStartTime) / 1000);
+                const minutes = Math.floor(diff / 60);
+                const seconds = diff % 60;
+                document.getElementById('session-time').textContent = 
+                    `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+            }, 1000);
+        }
+        
+        // Reset progress
+        function resetProgress() {
+            signsLearned = 0;
+            correctAttempts = 0;
+            totalAttempts = 0;
+            currentSignIndex = 0;
+            updateStats();
+            updateCurrentSign();
+            
+            document.getElementById('accuracy-progress').style.width = '0%';
+            document.getElementById('accuracy-value').textContent = '0%';
+            
+            const feedbackElement = document.getElementById('feedback-message');
+            feedbackElement.className = 'feedback-message feedback-poor';
+            feedbackElement.textContent = 'Start practicing the sign shown above. The AI will analyze your hand position and provide feedback.';
+        }
+        
+        // Update status indicator
+        function updateStatus(message, status) {
+            document.getElementById('status-text').textContent = message;
+            const statusDot = document.getElementById('status-dot');
+            statusDot.className = `status-dot ${status}`;
+        }
+        
+        // Authentication functions
+        function showSignIn() {
+            document.getElementById('signin-modal').style.display = 'flex';
+        }
+        
+        function hideSignIn() {
+            document.getElementById('signin-modal').style.display = 'none';
+        }
+        
+        function showSignUp() {
+            document.getElementById('signup-modal').style.display = 'flex';
+        }
+        
+        function hideSignUp() {
+            document.getElementById('signup-modal').style.display = 'none';
+        }
+        
+        function handleSignIn(e) {
+            e.preventDefault();
+            const email = document.getElementById('signin-email').value;
+            const password = document.getElementById('signin-password').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Show loading state
+            submitBtn.classList.add('btn-loading');
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // In a real app, this would be an API call to authenticate
+                // For demo, we'll simulate successful login
+                currentUser = {
+                    name: email.split('@')[0],
+                    email: email,
+                    avatar: email.charAt(0).toUpperCase()
+                };
+                
+                // Save to localStorage
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Update UI
+                updateUserUI();
+                hideSignIn();
+                
+                // Remove loading state
+                submitBtn.classList.remove('btn-loading');
+                
+                // Show welcome message
+                showNotification(`Welcome back, ${currentUser.name}! 🎉`);
+            }, 1500);
+        }
+        
+        function handleSignUp(e) {
+            e.preventDefault();
+            const name = document.getElementById('signup-name').value;
+            const email = document.getElementById('signup-email').value;
+            const password = document.getElementById('signup-password').value;
+            const confirmPassword = document.getElementById('signup-confirm').value;
+            const ageGroup = document.getElementById('signup-age').value;
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                showNotification('Passwords do not match. Please try again.', 'error');
+                return;
+            }
+            
+            // Show loading state
+            submitBtn.classList.add('btn-loading');
+            
+            // Simulate API call delay
+            setTimeout(() => {
+                // In a real app, this would be an API call to create account
+                // For demo, we'll simulate successful registration
+                currentUser = {
+                    name: name,
+                    email: email,
+                    avatar: name.charAt(0).toUpperCase(),
+                    ageGroup: ageGroup
+                };
+                
+                // Save to localStorage
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                
+                // Update UI
+                updateUserUI();
+                hideSignUp();
+                
+                // Remove loading state
+                submitBtn.classList.remove('btn-loading');
+                
+                // Show welcome message
+                showNotification(`Welcome to SignSmart, ${name}! 🎉 Let's start learning sign language!`);
+            }, 1500);
+        }
+        
+        function signOut() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUserUI();
+            showNotification('You have been signed out. Come back soon!');
+        }
+        
+        function checkAuthStatus() {
+            const savedUser = localStorage.getItem('currentUser');
+            if (savedUser) {
+                currentUser = JSON.parse(savedUser);
+                updateUserUI();
+            }
+        }
+        
+        function updateUserUI() {
+            const authButtons = document.getElementById('auth-buttons');
+            const userInfo = document.getElementById('user-info');
+            const userAvatar = document.getElementById('user-avatar');
+            const userName = document.getElementById('user-name');
+            
+            if (currentUser) {
+                authButtons.style.display = 'none';
+                userInfo.style.display = 'flex';
+                userAvatar.textContent = currentUser.avatar;
+                userName.textContent = currentUser.name;
+            } else {
+                authButtons.style.display = 'block';
+                userInfo.style.display = 'none';
+            }
+        }
+        
+        // SmartBot functions
+        function toggleSmartBot() {
+            const smartbotWindow = document.getElementById('smartbot-window');
+            smartBotOpen = !smartBotOpen;
+            
+            if (smartBotOpen) {
+                smartbotWindow.style.display = 'flex';
+            } else {
+                smartbotWindow.style.display = 'none';
+            }
+        }
+        
+        function sendSmartBotMessage() {
+            const input = document.getElementById('smartbot-input');
+            const message = input.value.trim();
+            
+            if (message === '') return;
+            
+            // Add user message
+            addMessageToChat(message, 'user');
+            
+            // Clear input
+            input.value = '';
+            
+            // Generate bot response after a short delay
+            setTimeout(() => {
+                const response = generateSmartBotResponse(message);
+                addMessageToChat(response, 'bot');
+            }, 1000);
+        }
+        
+        function addMessageToChat(message, sender) {
+            const messagesContainer = document.getElementById('smartbot-messages');
+            const messageElement = document.createElement('div');
+            messageElement.classList.add('message');
+            messageElement.classList.add(sender === 'user' ? 'user-message' : 'bot-message');
+            messageElement.textContent = message;
+            
+            messagesContainer.appendChild(messageElement);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+        
+        function generateSmartBotResponse(message) {
+            const lowerMessage = message.toLowerCase();
+            
+            if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
+                return getRandomResponse(smartBotResponses.greeting);
+            } else if (lowerMessage.includes('help')) {
+                return getRandomResponse(smartBotResponses.help);
+            } else if (lowerMessage.includes('lesson') || lowerMessage.includes('learn')) {
+                return getRandomResponse(smartBotResponses.lessons);
+            } else if (lowerMessage.includes('feedback') || lowerMessage.includes('accuracy')) {
+                return getRandomResponse(smartBotResponses.feedback);
+            } else {
+                return getRandomResponse(smartBotResponses.default);
+            }
+        }
+        
+        function getRandomResponse(responses) {
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+        
+        // Responsive navigation
+        function toggleNav() {
+            const navLinks = document.getElementById('nav-links');
+            navLinks.classList.toggle('active');
+        }
+        
+        // Notification system
+        function showNotification(message, type = 'success') {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                padding: 15px 20px;
+                background: ${type === 'error' ? 'var(--signsmart-red)' : 'var(--signsmart-green)'};
+                color: white;
+                border-radius: 8px;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+                z-index: 10000;
+                transform: translateX(150%);
+                transition: transform 0.3s ease;
+                max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            // Animate in
+            setTimeout(() => {
+                notification.style.transform = 'translateX(0)';
+            }, 100);
+            
+            // Remove after 3 seconds
+            setTimeout(() => {
+                notification.style.transform = 'translateX(150%)';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
