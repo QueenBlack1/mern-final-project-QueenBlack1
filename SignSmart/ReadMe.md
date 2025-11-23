@@ -10,7 +10,7 @@ SignSmart is a comprehensive MERN (MongoDB, Express.js, React, Node.js) applicat
 
 <div align="center">
 
-![SignSmart Demo](https://via.placeholder.com/800x400/4A90E2/FFFFFF?text=SignSmart+-+Making+Sign+Language+Learning+Fun+and+Accessible)
+![SignSmart Demo]https://signsmart3.netlify.app/
 
 </div>
 
@@ -47,7 +47,7 @@ SignSmart is a comprehensive MERN (MongoDB, Express.js, React, Node.js) applicat
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/signsmart.git
+   git clone https://github.com/QueenBlack1/mern-final-project-QueenBlack1.git
    cd signsmart
    ```
 
@@ -256,7 +256,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 🆘 Support
 
 - 📧 Email: support@signsmart.com
-- 🐛 [Issue Tracker](https://github.com/your-username/signsmart/issues)
+- 🐛 [Issue Tracker](https://github.com/QueenBlack1/signsmart/issues)
 - 📚 [Documentation](https://docs.signsmart.com)
 - 💬 [Community Discord](https://discord.gg/signsmart)
 
@@ -270,7 +270,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 📞 Contact
 
 **SignSmart Team**
-- Website: (https://signsmart3.netlify.app/)
+- Website: https://signsmart3.netlify.app/
 - Email: hello@signsmart.com
 - Twitter: [@SignSmartApp](https://twitter.com/SignSmartApp)
 
